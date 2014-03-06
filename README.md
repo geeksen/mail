@@ -5,13 +5,14 @@ Enable CGI
 ----------
 * cd /etc/apache2/mods-available
 * sudo vi mime.conf
-* AddHandler cgi-script .cgi
+> AddHandler cgi-script .cgi
+
 * cd /etc/apache2/sites-enabled
 * sudo vi 000-default
 
-> <Directory /var/www>
+> &lt;Directory /var/www&gt;
 Options +ExecCGI
-</Directory> 
+&lt;/Directory&gt;
 
 * sudo /etc/init.d/apache2 restart
 
@@ -22,5 +23,3 @@ Chmod
 Run
 ---
 * Open browser and access http://your.web.server/mail.cgi
-
-
