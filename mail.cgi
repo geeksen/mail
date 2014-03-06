@@ -48,13 +48,13 @@ my $M;
 # CGI
 my $q;
 
-my $buf = '';
-my $total = 0;
-
 my $script = $ENV{'SCRIPT_NAME'};
 my $domain = $ENV{'SERVER_NAME'};
 
 my ($num, $mode, $type, $back, $page, $time, $email, $userid, $passwd, $pop3_server, $mimepart);
+
+my $buf = '';
+my $total = 0;
 
 &Main;
 
