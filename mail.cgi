@@ -52,7 +52,7 @@ my $total = 0;
 my $script = $ENV{'SCRIPT_NAME'};
 my $domain = $ENV{'SERVER_NAME'};
 
-my ($num, $mode, $type, $back, $page, $time, $email, $userid, $passwd, $server, $mimepart);
+my ($num, $mode, $type, $back, $page, $time, $email, $userid, $passwd, $pop3_server, $mimepart);
 
 &Main;
 
@@ -68,7 +68,7 @@ sub Main {
     $email = '';
     $userid = $q->cookie(-name=>'mUSERID');
     $passwd = unpack('u', $q->cookie(-name=>'mPASSWD'));
-    $server = $q->cookie(-name=>'mSERVER');
+    $pop3_server = $q->cookie(-name=>'mSERVER');
     $mimepart = $q->param('mimepart');
 
     if ($back > -1) { $back++; }
@@ -76,11 +76,11 @@ sub Main {
     if ($q->param('userid') ne '') {
         $userid = $q->param('userid');
         $passwd = $q->param('passwd');
-        $server = $q->param('server');
+        $pop3_server = $q->param('pop3_server');
     }
 
     if ($userid =~ /@/) { $email = $userid; }
-    else { $email = $userid . '@' . $server; }
+    else { $email = $userid . '@' . $pop3_server; }
 
     &mLocale;
 
@@ -191,7 +191,7 @@ sub List {
         );
         $cookie3 = $q->cookie(
             -name=>'mSERVER',
-            -value=>$server,
+            -value=>$pop3_server,
             -path=>'/',
             -domain=>$domain,
         );
@@ -710,8 +710,8 @@ sub Form {
     <td><input type=text name=subject size=40 value='$subject'></td>
   </tr>
   <tr>
-    <th>$l{'smtp'}</th>
-    <td><input type=text name=smtp size=40 value='$server'></td>
+    <th>$l{'smtp_server'}</th>
+    <td><input type=text name=smtp_server size=40 value='$pop3_server'></td>
   </tr>
   <tr>
     <td colspan=2><textarea name=body rows=20 cols=75>
@@ -811,7 +811,7 @@ EOT
 sub Send {
     my ($host, $sin, $buf, $auth);
     my ($encoding, $boundary, $boundary_alternative);
-    my ($from, $to, $cc, $bcc, $subject, $date, $smtp, $body);
+    my ($from, $to, $cc, $bcc, $subject, $date, $smtp_server, $body);
     my ($filehandle, $filehandle1, $filehandle2, $filehandle3);
     my ($filetype, $filename, $file, $tmp, $i);
     my ($attachment_name, $attachment_type);
@@ -823,7 +823,7 @@ sub Send {
     $bcc = $q->param('bcc');
     $subject = $q->param('subject');
     $date = &mGetDate;
-    $smtp = $q->param('smtp');
+    $smtp_server = $q->param('smtp_server');
     $body = $q->param('body');
     @attachment = $q->param('attachment');
     $filehandle1 = $q->param('file1');
@@ -836,7 +836,7 @@ sub Send {
     if ($to eq '')      { &Error($l{'to_error'}); }
     if ($subject eq '') { $subject = $l{'subject_unspecified'}; }
     if ($body eq '')    { &Error($l{'body_error'}); }
-    if ($smtp eq '')    { &Error($l{'smtp_error'}); }
+    if ($smtp_server eq '')    { &Error($l{'smtp_server_error'}); }
 
     if ($to  ne '') { @to  = split(/[,;]/, $to);  }
     if ($cc  ne '') { @cc  = split(/[,;]/, $cc);  }
@@ -864,7 +864,7 @@ sub Send {
 
     socket($N, 2, 1, 6);
 
-    $host = gethostbyname($smtp);
+    $host = gethostbyname($smtp_server);
     $sin = pack('S n a4 x8', 2, 25, $host);
     if (!connect($N, $sin)) { &Error($l{'connect_error'}); }
 
@@ -878,7 +878,7 @@ sub Send {
     if ($buf =~ /^[45]/) { &Error($buf); }
 
     $auth = 0;
-    print $N "EHLO $smtp\r\n";
+    print $N "EHLO $smtp_server\r\n";
     while (1) {
         $buf = <$N>;
         if ($buf =~ /^[45]/) { &Error($buf); }
@@ -1145,9 +1145,9 @@ sub LoginForm {
     <td><input type=password name=passwd size=20></td>
   </tr>
   <tr>
-    <td>$l{'server'}</td>
+    <td>$l{'pop3_server'}</td>
     <td>
-      <input type=text name=server value='geeksen.com' size=20>
+      <input type=text name=pop3_server value='geeksen.com' size=20>
       <input type=submit value='$l{'login_submit'}'></td>
   </tr>
 </table>
@@ -1195,11 +1195,11 @@ sub mUSER {
 
     if ($userid eq '') { &Error($l{'userid_error'}); }
     if ($passwd eq '') { &Error($l{'passwd_error'}); }
-    if ($server eq '') { &Error($l{'server_error'}); }
+    if ($pop3_server eq '') { &Error($l{'pop3_server_error'}); }
 
     socket($M, 2, 1, 6);
 
-    $host = gethostbyname($server);
+    $host = gethostbyname($pop3_server);
     $sin = pack('S n a4 x8', 2, 110, $host);
     if (!connect($M, $sin)) { &Error($l{'connect_error'}); }
 
@@ -1898,7 +1898,7 @@ sub mLocale {
 
         $l{'userid'} = '아이디';
         $l{'passwd'} = '비밀번호';
-        $l{'server'} = '받는메일서버';
+        $l{'pop3_server'} = '받는메일서버';
 
         $l{'logout'} = '로그아웃';
         $l{'compose'} = '편지쓰기';
@@ -1920,7 +1920,7 @@ sub mLocale {
         $l{'bcc'} = '숨은참조';
         $l{'date'} = '날짜';
         $l{'subject'} = '제목';
-        $l{'smtp'} = '메일 서버';
+        $l{'smtp_server'} = '메일 서버';
         $l{'attachment'} = '첨부파일';
         $l{'original_message'} = '원본 메시지';
         $l{'original_message_included'} = '원본 메시지가 첨부되었습니다.';
@@ -1937,10 +1937,10 @@ sub mLocale {
 
         $l{'userid_error'} = '아이디가 필요합니다.';
         $l{'passwd_error'} = '비밀번호가 필요합니다.';
-        $l{'server_error'} = '메일 서버가 필요합니다.';
+        $l{'pop3_server_error'} = '메일 서버가 필요합니다.';
         $l{'from_error'} = '보내는 사람의 이메일이 필요합니다.';
         $l{'to_error'} = '받는 사람이 필요합니다.';
-        $l{'smtp_error'} = '보내는 메일 서버가 필요합니다.';
+        $l{'smtp_server_error'} = '보내는 메일 서버가 필요합니다.';
         $l{'body_error'} = '내용이 필요합니다.';
         $l{'connect_error'} = '서버에 접속할 수 없습니다.';
 
@@ -1952,7 +1952,7 @@ sub mLocale {
 
         $l{'userid'} = 'UserID';
         $l{'passwd'} = 'Passwd';
-        $l{'server'} = 'POP Server';
+        $l{'pop3_server'} = 'POP3 Server';
 
         $l{'logout'} = 'Logout';
         $l{'compose'} = 'Compose';
@@ -1974,7 +1974,7 @@ sub mLocale {
         $l{'bcc'} = 'BCC';
         $l{'date'} = 'Date';
         $l{'subject'} = 'Subject';
-        $l{'smtp'} = 'SMTP Server';
+        $l{'smtp_server'} = 'SMTP Server';
         $l{'attachment'} = 'Attachment';
         $l{'original_message'} = 'Original Message';
         $l{'original_message_included'} = 'Original Message Included.';
@@ -1991,10 +1991,10 @@ sub mLocale {
 
         $l{'userid_error'} = 'UserID Must Be Specified.';
         $l{'passwd_error'} = 'Passwd Must Be Specified.';
-        $l{'server_error'} = 'Server Must Be Specified.';
+        $l{'pop3_server_error'} = 'Server Must Be Specified.';
         $l{'from_error'} = 'From Must Be Specified.';
         $l{'to_error'} = 'To Must Be Specified.';
-        $l{'smtp_error'} = 'SMTP Server Must Be Specified.';
+        $l{'smtp_server_error'} = 'SMTP Server Must Be Specified.';
         $l{'body_error'} = 'Body Must Be Specified.';
         $l{'connect_error'} = 'Could NOT Connect To Server.';
 
