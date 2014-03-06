@@ -19,4 +19,4 @@ Chmod
 
 Run
 ---
-* Open browser and access http://your.web.server/mail.cgi
+* Go to http://your.web.server/mail.cgi
