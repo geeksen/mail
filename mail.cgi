@@ -1959,7 +1959,7 @@ sub mLocale {
         $l{'reply'} = 'Reply';
         $l{'reply_all'} = 'Reply All';
         $l{'forward'} = 'Forward';
-        $l{'forward_attach'} = 'Forward As Attach';
+        $l{'forward_attach'} = 'Forward As Attachment';
         $l{'headers'} = 'Headers';
         $l{'delete'} = 'Delete';
 
