@@ -32,7 +32,7 @@ use CGI qw/:param :header :upload/;
 use Encode;
 
 # Conf
-my $LOCALE = 'en';           # ko, en ..
+my $LOCALE = 'ko';           # ko, en ..
 my $TIMEZONE = '+0900';      # +0900, KST, GMT ..
 my $WIDTH = 770;
 my $PAGESIZE = 10;
@@ -109,19 +109,19 @@ sub Head {
   <style type='text/css'>
     body, td {
       background-color:#ffffff; color:#666666;
-      font-size:9pt; font-family:tahoma;
+      font-size:9pt; font-family:tahoma, geneva, sans-serif;
     }
     th {
       background-color:#666666; color:#ffffff;
-      font-size:9pt; font-family:tahoma;
+      font-size:9pt; font-family:tahoma, geneva, sans-serif;
     }
-    input, select { font-size:9pt; font-family:tahoma,arial; }
+    input, select { font-size:9pt; font-family:tahoma, geneva, sans-serif; }
     img { border:0px; }
     hr { height:1px; }
     .th_150 { width:150px; }
     .td_right { text-align:right; }
     .td_center { text-align:center; }
-    .large { color:#666666; font-size:14pt; font-family:tahoma; }
+    .large { color:#666666; font-size:14pt; font-family:tahoma, geneva, sans-serif; }
     .list_bg1 { background-color:#ffffff; }
     .list_bg2 { background-color:#eeeeee; }
     .mail_body {
@@ -684,7 +684,7 @@ sub Form {
 <form method=post action='$script' enctype='multipart/form-data'>
 <table border=0>
   <tr>
-    <th>$l{'sender'}</th>
+    <th class=th_150>$l{'sender'}</th>
     <td>
       <input type=text name=from size=40 value='<$email>'>
       <input type=hidden name=mode value='send'>
@@ -1898,7 +1898,7 @@ sub mLocale {
 
         $l{'userid'} = '아이디';
         $l{'passwd'} = '비밀번호';
-        $l{'pop3_server'} = '받는메일서버';
+        $l{'pop3_server'} = '받는 메일서버';
 
         $l{'logout'} = '로그아웃';
         $l{'compose'} = '편지쓰기';
@@ -1920,7 +1920,7 @@ sub mLocale {
         $l{'bcc'} = '숨은참조';
         $l{'date'} = '날짜';
         $l{'subject'} = '제목';
-        $l{'smtp_server'} = '메일 서버';
+        $l{'smtp_server'} = '보내는 메일서버';
         $l{'attachment'} = '첨부파일';
         $l{'original_message'} = '원본 메시지';
         $l{'original_message_included'} = '원본 메시지가 첨부되었습니다.';
@@ -1937,10 +1937,10 @@ sub mLocale {
 
         $l{'userid_error'} = '아이디가 필요합니다.';
         $l{'passwd_error'} = '비밀번호가 필요합니다.';
-        $l{'pop3_server_error'} = '메일 서버가 필요합니다.';
+        $l{'pop3_server_error'} = '받는 메일서버가 필요합니다.';
         $l{'from_error'} = '보내는 사람의 이메일이 필요합니다.';
         $l{'to_error'} = '받는 사람이 필요합니다.';
-        $l{'smtp_server_error'} = '보내는 메일 서버가 필요합니다.';
+        $l{'smtp_server_error'} = '보내는 메일서버가 필요합니다.';
         $l{'body_error'} = '내용이 필요합니다.';
         $l{'connect_error'} = '서버에 접속할 수 없습니다.';
 
@@ -1991,7 +1991,7 @@ sub mLocale {
 
         $l{'userid_error'} = 'UserID Must Be Specified.';
         $l{'passwd_error'} = 'Passwd Must Be Specified.';
-        $l{'pop3_server_error'} = 'Server Must Be Specified.';
+        $l{'pop3_server_error'} = 'POP3 Server Must Be Specified.';
         $l{'from_error'} = 'From Must Be Specified.';
         $l{'to_error'} = 'To Must Be Specified.';
         $l{'smtp_server_error'} = 'SMTP Server Must Be Specified.';
