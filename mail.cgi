@@ -32,7 +32,7 @@ use CGI qw/:param :header :upload/;
 use Encode;
 
 # Conf
-my $LOCALE = 'ko';           # ko, en ..
+my $LOCALE = 'en';           # ko, en ..
 my $TIMEZONE = '+0900';      # +0900, KST, GMT ..
 my $WIDTH = 770;
 my $PAGESIZE = 10;
