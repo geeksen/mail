@@ -35,8 +35,8 @@ use Encode;
 my $LOCALE = 'en';           # ko, en ..
 my $TIMEZONE = '+0900';      # +0900, KST, GMT ..
 my $WIDTH = 770;
-my $PAGESIZE = 100;
-my $PAGELINK = 100;
+my $PAGESIZE = 10;
+my $PAGELINK = 10;
 
 my %m;
 my %l;
