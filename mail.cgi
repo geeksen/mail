@@ -38,12 +38,14 @@ my $WIDTH = 770;
 my $PAGESIZE = 10;
 my $PAGELINK = 10;
 
+# Hashes
 my %m;
 my %l;
 #my %s;
 my $N;
 my $M;
 
+# CGI
 my $q;
 
 my $buf = '';
@@ -94,7 +96,6 @@ sub Main {
     else  { &LoginForm; }
 }
 
-# HTML Head
 sub Head {
     my ($title) = $_[0];
 
@@ -153,7 +154,6 @@ EOT
 EOT
 }
 
-# HTML Tail
 sub Tail {
     print <<EOT;
 
