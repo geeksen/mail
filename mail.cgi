@@ -537,7 +537,7 @@ EOT
 }
 
 sub Delete {
-    my ($i) = 0;
+    my ($i);
     my ($name);
 
     &mUSER;
@@ -1104,7 +1104,7 @@ EOT
 }
 
 sub Head {
-    my ($title) = $_[0];
+    my $title = $_[0];
 
     print <<EOT;
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
@@ -1171,7 +1171,7 @@ EOT
 }
 
 sub Error {
-    my ($message) = $_[0];
+    my $message = $_[0];
 
     print $q->header(-charset=>'utf-8');
     &Head($message);
@@ -1181,7 +1181,7 @@ sub Error {
 }
 
 sub Reload {
-    my ($url) = $_[0];
+    my $url = $_[0];
 
     print "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>";
     print "\n\n";
@@ -1249,7 +1249,7 @@ sub mSTAT {
 #}
 
 sub mTOP {
-    my ($mNUM) = $_[0];
+    my $mNUM = $_[0];
     my ($TMP, $flag, $tmp, $i);
     my ($from, $date, $subject, $charset, $content_type, $priority);
     my (@tmp);
@@ -1709,7 +1709,7 @@ sub mRETR {
 }
 
 sub mDELE {
-    my ($mNUM) = $_[0];
+    my $mNUM = $_[0];
 
     print $M "DELE $mNUM\r\n";
     $buf = <$M>;
@@ -1725,7 +1725,7 @@ sub mQUIT {
 }
 
 sub mDecodeHeader {
-    my ($str) = $_[0];
+    my $str = $_[0];
     my ($tmp);
     my (@tmp);
 
@@ -1760,7 +1760,7 @@ sub mDecodeBody {
 }
 
 sub mEncodeBase64 {
-    my ($str1) = $_[0];
+    my $str1 = $_[0];
     my ($str2, $padding);
 
     while ($str1 =~ /(.{1,45})/gs) {
@@ -1777,7 +1777,7 @@ sub mEncodeBase64 {
 }
 
 sub mDecodeBase64 {
-    my ($str1) = $_[0];
+    my $str1 = $_[0];
     my ($str2, $tmp, $i);
 
     for ($i = 0; $i < (length($str1) % 4); $i++) { chop($str1); }
@@ -1793,7 +1793,7 @@ sub mDecodeBase64 {
 }
 
 sub mDecodeQuotedPrintable {
-    my ($str1) = $_[0];
+    my $str1 = $_[0];
     my ($str2);
 
     $str1 =~ s/\s+(\r?\n)/$1/g;
@@ -1814,21 +1814,21 @@ sub mEncodeUTF8 {
 }
 
 sub mEncodeHTML {
-    my ($str) = $_[0];
+    my $str = $_[0];
     $str =~ s/</&lt;/g;
     $str =~ s/>/&gt;/g;
     return $str;
 }
 
 #sub mDecodeHTML {
-#    my ($str) = $_[0];
+#    my $str = $_[0];
 #    $str =~ s/&lt;/</gi;
 #    $str =~ s/&gt;/>/gi;
 #    return $str;
 #}
 
 sub mGetDate {
-    my (%months) = (
+    my %months = (
         '01', 'Jan',
         '02', 'Feb',
         '03', 'Mar',
@@ -1842,10 +1842,8 @@ sub mGetDate {
         '11', 'Nov',
         '12', 'Dec',
     );
-    my (@weeks) = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
-    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday);
-
-    ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime();
+    my @weeks = ('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+    my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday) = localtime();
 
     $year += 1900;
     $mon  += 1;
@@ -1860,9 +1858,9 @@ sub mGetDate {
 }
 
 sub mFormatDate {
-    my ($time) = $_[0];
+    my $time = $_[0];
     my ($day, $month, $year, $hour_min, $gmt_interval);
-    my (%months) = (
+    my %months = (
         'Jan', '01',
         'Feb', '02',
         'Mar', '03',
@@ -1886,7 +1884,7 @@ sub mFormatDate {
 }
 
 sub mSize {
-    my ($size) = $_[0];
+    my $size = $_[0];
 
     if ($size >= 1048576) { return int($size / 1048576) . 'M'; }
     elsif ($size >= 1024) { return int($size / 1024) . 'K';    }
