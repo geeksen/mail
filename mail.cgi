@@ -42,14 +42,15 @@ my $PAGELINK = 10;
 my %m;
 my %l;
 #my %s;
-my $N;
-my $M;
 
 # CGI
 my $q;
 
 my $script = $ENV{'SCRIPT_NAME'};
 my $domain = $ENV{'SERVER_NAME'};
+
+my $N;
+my $M;
 
 my ($num, $mode, $type, $back, $page, $time, $email, $userid, $passwd, $pop3_server, $mimepart);
 
