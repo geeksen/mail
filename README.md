@@ -16,7 +16,6 @@ Enable CGI
 Check Perl Path
 ---------------
 * which perl
-* whereis perl
 * update the first line of source code, if necessary
 
 Chmod
