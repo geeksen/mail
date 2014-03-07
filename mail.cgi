@@ -1061,7 +1061,9 @@ sub LoginForm {
     &Head($l{'login_title'});
     print <<EOT;
   <tr>
-    <td class=td_right><a href='http://www.geeksen.com'>Home</a></td>
+    <td class=td_right>
+      <a href='http://www.geeksen.com'>Download Source</a>
+    </td>
   </tr>
 </table>
 
@@ -1070,7 +1072,7 @@ sub LoginForm {
   <tr>
     <td>$l{'userid'}</td>
     <td>
-      <input type=text name=userid value='test\@geeksen.com' size=20>
+      <input type=text name=userid value='' size=20>
       <input type=hidden name=mode value='list'>
     </td>
   </tr>
@@ -1081,7 +1083,7 @@ sub LoginForm {
   <tr>
     <td>$l{'pop3_server'}</td>
     <td>
-      <input type=text name=pop3_server value='geeksen.com' size=20>
+      <input type=text name=pop3_server value='' size=20>
       <input type=submit value='$l{'login_submit'}'></td>
   </tr>
 </table>
@@ -1089,14 +1091,6 @@ sub LoginForm {
 <table border=0 width='$WIDTH'>
   <tr>
     <td><hr></td>
-  </tr>
-</table>
-
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td class=td_right>
-      <a href='http://www.geeksen.com/'>Download Source</a>
-    </td>
   </tr>
 </table>
 EOT
