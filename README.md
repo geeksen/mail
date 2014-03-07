@@ -13,6 +13,12 @@ Enable CGI
 
 * sudo /etc/init.d/apache2 restart
 
+Check Perl Path
+---------------
+* which perl
+* whereis perl
+* update the first line of source code, if necessary
+
 Chmod
 -----
 * chmod a+x mail.cgi
