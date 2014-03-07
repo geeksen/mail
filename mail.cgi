@@ -97,73 +97,6 @@ sub Main {
     else  { &LoginForm; }
 }
 
-sub Head {
-    my ($title) = $_[0];
-
-    print <<EOT;
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
-  'http://www.w3.org/TR/html4/strict.dtd'>
-
-<html>
-<head>
-  <title>Geeksen Mail</title>
-  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-  <style type='text/css'>
-    body, td {
-      background-color:#ffffff; color:#666666;
-      font-size:9pt; font-family:tahoma, geneva, sans-serif;
-    }
-    th {
-      background-color:#666666; color:#ffffff;
-      font-size:9pt; font-family:tahoma, geneva, sans-serif;
-    }
-    input, select { font-size:9pt; font-family:tahoma, geneva, sans-serif; }
-    img { border:0px; }
-    hr { height:1px; }
-    .th_150 { width:150px; }
-    .td_right { text-align:right; }
-    .td_center { text-align:center; }
-    .large { color:#666666; font-size:14pt; font-family:tahoma, geneva, sans-serif; }
-    .list_bg1 { background-color:#ffffff; }
-    .list_bg2 { background-color:#eeeeee; }
-    .mail_body {
-EOT
-
-    if ($m{'bgcolor'} ne '') {
-        print "      background-color:$m{'bgcolor'};\n";
-    }
-    if ($m{'background'} ne '') {
-        print "      background-image:url($m{'background'});\n";
-    }
-
-    print <<EOT;
-    }
-
-    a:link { color:#0066cc; text-decoration:none; }
-    a:active { color:#0066cc; text-decoration:none; }
-    a:visited { color:#0066cc; text-decoration:none; }
-    a:hover { color:#0066cc; text-decoration:underline; }
-  </style>
-</head>
-
-<body>
-
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td class='large'>$title</td>
-  </tr>
-EOT
-}
-
-sub Tail {
-    print <<EOT;
-
-</form>
-</body>
-</html>
-EOT
-}
-
 sub List {
     my ($cookie1, $cookie2, $cookie3);
     my ($i, $j, $totalpage, $first, $last);
@@ -1168,6 +1101,73 @@ sub LoginForm {
 </table>
 EOT
     &Tail;
+}
+
+sub Head {
+    my ($title) = $_[0];
+
+    print <<EOT;
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
+  'http://www.w3.org/TR/html4/strict.dtd'>
+
+<html>
+<head>
+  <title>Geeksen Mail</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <style type='text/css'>
+    body, td {
+      background-color:#ffffff; color:#666666;
+      font-size:9pt; font-family:tahoma, geneva, sans-serif;
+    }
+    th {
+      background-color:#666666; color:#ffffff;
+      font-size:9pt; font-family:tahoma, geneva, sans-serif;
+    }
+    input, select { font-size:9pt; font-family:tahoma, geneva, sans-serif; }
+    img { border:0px; }
+    hr { height:1px; }
+    .th_150 { width:150px; }
+    .td_right { text-align:right; }
+    .td_center { text-align:center; }
+    .large { color:#666666; font-size:14pt; font-family:tahoma, geneva, sans-serif; }
+    .list_bg1 { background-color:#ffffff; }
+    .list_bg2 { background-color:#eeeeee; }
+    .mail_body {
+EOT
+
+    if ($m{'bgcolor'} ne '') {
+        print "      background-color:$m{'bgcolor'};\n";
+    }
+    if ($m{'background'} ne '') {
+        print "      background-image:url($m{'background'});\n";
+    }
+
+    print <<EOT;
+    }
+
+    a:link { color:#0066cc; text-decoration:none; }
+    a:active { color:#0066cc; text-decoration:none; }
+    a:visited { color:#0066cc; text-decoration:none; }
+    a:hover { color:#0066cc; text-decoration:underline; }
+  </style>
+</head>
+
+<body>
+
+<table border=0 width='$WIDTH'>
+  <tr>
+    <td class='large'>$title</td>
+  </tr>
+EOT
+}
+
+sub Tail {
+    print <<EOT;
+
+</form>
+</body>
+</html>
+EOT
 }
 
 sub Error {
