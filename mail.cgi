@@ -201,23 +201,23 @@ EOT
 
     $i = int(($page - 1) / $PAGELINK) * $PAGELINK + 1;
     if ($i > $PAGELINK) {
-        print  "    [<a href='$script?mode=list'>1</a>]\n";
-        printf "    [<a href='$script?mode=list&amp;page=%d'>", $i - 1;
-        print  "$l{'prev'}</a>]\n";
+        print  "    <a href='$script?mode=list'>1</a> &nbsp;\n";
+        printf "    <a href='$script?mode=list&amp;page=%d'>", $i - 1;
+        print  "&lt;&lt;</a> &nbsp;\n";
     }
     for ($j = 0; $i <= $totalpage && $j < $PAGELINK; $i++, $j++) {
         if ($i == $page) {
-            print "    [$i]\n";
+            print "    <b>$i</b> &nbsp;\n";
         }
         else {
-            print "    [<a href='$script?mode=list&amp;page=$i'>$i</a>]\n";
+            print "    <a href='$script?mode=list&amp;page=$i'>$i</a> &nbsp;\n";
         }
     }
     if ($i <= $totalpage) {
-        print "    [<a href='$script?mode=list&amp;page=$i'>";
-        print "$l{'next'}</a>]\n";
-        print "    [<a href='$script?mode=list&amp;page=$totalpage'>";
-        print "$totalpage</a>]\n";
+        print "    <a href='$script?mode=list&amp;page=$i'>";
+        print "&gt;&gt;</a> &nbsp;\n";
+        print "    <a href='$script?mode=list&amp;page=$totalpage'>";
+        print "$totalpage</a> &nbsp;\n";
     }
 
     print <<EOT;
