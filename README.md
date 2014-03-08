@@ -3,6 +3,7 @@ mail.cgi
 
 Enable CGI
 ----------
+* sudo a2enmod cgi
 * cd /etc/apache2/mods-available
 * sudo vi mime.conf
 > AddHandler cgi-script .cgi
@@ -13,10 +14,17 @@ Enable CGI
 
 * sudo /etc/init.d/apache2 restart
 
+Install mail.cgi
+----------------
+* git clone https://github.com/geeksen/mail.git
+* cd mail
+
 Check Perl Path
 ---------------
 * which perl
-* update the first line of source code, if necessary
+* if necessary, modify the first line of source code
+** vi mail.cgi
+*> #!/usr/local/bin/perl
 
 Chmod
 -----
