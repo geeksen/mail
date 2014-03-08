@@ -154,8 +154,7 @@ EOT
   </span>
 </div>
 
-<table>
-<thead>
+<table class='hover'>
   <tr>
     <th>
       <input type='checkbox' id='check_all_1'>
@@ -193,7 +192,6 @@ EOT
     &mQUIT;
 
     print <<EOT;
-</thead>
 </table>
 
 <div>
@@ -352,7 +350,6 @@ EOT
 </div>
 
 <table>
-<tbody>
   <tr>
     <th class='th-fixed-width'>$l{'num'}</th>
     <td>$num / $total</td>
@@ -433,7 +430,6 @@ EOT
     print <<EOT;
     </td>
   </tr>
-</tbody>
 </table>
 
 <div class='nav-bottom'>
@@ -586,7 +582,6 @@ sub Form {
 
 <form method='post' action='$script' enctype='multipart/form-data'>
 <table>
-<tbody>
   <tr>
     <th class='th-fixed-width'>$l{'sender'}</th>
     <td>
@@ -698,7 +693,6 @@ EOT
     }
 
     print <<EOT;
-</tbody>
 </table>
 
 <div class='nav-bottom'>
@@ -1121,7 +1115,7 @@ sub Head {
     .nav-bottom { margin-top:.5em }
 
     table { width:100%; border:1px solid #ddd; border-collapse:collapse }
-    table thead tr:hover { background-color:#eee }
+    .hover tr:hover { background-color:#eee }
 
     th {
       background-color:#eee;
