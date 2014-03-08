@@ -34,7 +34,6 @@ use Encode;
 # Conf
 my $LOCALE = 'en';           # ko, en ..
 my $TIMEZONE = '+0900';      # +0900, KST, GMT ..
-my $WIDTH = 770;
 my $PAGESIZE = 10;
 my $PAGELINK = 10;
 
@@ -52,7 +51,8 @@ my $domain = $ENV{'SERVER_NAME'};
 my $N;
 my $M;
 
-my ($num, $mode, $type, $back, $page, $time, $email, $userid, $passwd, $pop3_server, $mimepart);
+my ($num, $mode, $type, $back, $page, $time);
+my ($email, $userid, $passwd, $pop3_server, $mimepart);
 
 my $buf = '';
 my $total = 0;
@@ -139,48 +139,29 @@ sub List {
 
     &Head($email);
     print <<EOT;
-  <tr>
-    <td class=td_right><a href='$script?mode=logout'>$l{'logout'}</a></td>
-  </tr>
-</table>
+<span class='right'><a href='$script?mode=logout'>$l{'logout'}</a></span>
 
-<script type='text/javascript'>
-function CheckAll() {
-  is_checked = null;
-  for(i = 0; i < document.forms[0].elements.length; i++) {
-    if(document.forms[0].elements[i].name.indexOf('mail_') == 0 &&
-      document.forms[0].elements[i].type.toUpperCase() == 'CHECKBOX') {
-      is_checked = document.forms[0].elements[i].checked;
-      document.forms[0].elements[i].checked = !is_checked;
-    }
-  }
-}
-</script>
-
-<form method=post action='$script'>
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td>
+<form method='post' action='$script'>
+<div class='nav-top'>
 EOT
 
-    print "      <a href='$script?mode=form&amp;type=compose";
+    print "  <a href='$script?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a>\n";
 
     print <<EOT;
-    </td>
-    <td class=td_right>
-        $l{'total'} : $total, $l{'page'} : $page / $totalpage
-    </td>
-  </tr>
-</table>
+  <span class='right'>
+    $l{'total'} : $total, $l{'page'} : $page / $totalpage
+  </span>
+</div>
 
-<table border=0 width='$WIDTH' cellpadding=4>
+<table>
+<thead>
   <tr>
     <th>
-      <input type=checkbox name=mark1 onClick='CheckAll();'>
-      $l{'no'}
-      <input type=hidden name=mode value='delete'>
-      <input type=hidden name=page value='$page'>
+      <input type='checkbox' id='check_all_1'>
+      $l{'num'}
+      <input type='hidden' name='mode' value='delete'>
+      <input type='hidden' name='page' value='$page'>
     </th>
     <th>$l{'from'}</th>
     <th>$l{'subject'}</th>
@@ -195,98 +176,108 @@ EOT
     for ($i = $first; $i >= $last; $i--) {
         &mTOP($i);
 
-        if (($i % 2) == 0) {
-            print <<EOT;
+        print <<EOT;
   <tr>
-    <td class='list_bg1'>
-      <input type=checkbox name=mail_$i value='1'> $i $m{'priority'}
+    <td>
+      <input type='checkbox' name='mail_$i' value='1'> $i $m{'priority'}
     </td>
-    <td class='list_bg1'>$m{'from'}</td>
-    <td class='list_bg1'>
+    <td>$m{'from'}</td>
+    <td>
       <a href='$script?mode=read&amp;num=$i&amp;page=$page'>$m{'subject'}</a>
     </td>
-    <td class='list_bg1'>$m{'date'}</td>
+    <td>$m{'date'}</td>
   </tr>
 EOT
-        }
-        else {
-            print <<EOT;
-  <tr>
-    <td class='list_bg2'>
-      <input type=checkbox name=mail_$i value='1'>
-      $i $m{'priority'}
-    </td>
-    <td class='list_bg2'>$m{'from'}</td>
-    <td class='list_bg2'>
-      <a href='$script?mode=read&amp;num=$i&amp;page=$page'>$m{'subject'}</a>
-    </td>
-    <td class='list_bg2'>$m{'date'}</td>
-  </tr>
-EOT
-        }
+
     }
     &mQUIT;
 
     print <<EOT;
-  <tr>
-    <td><input type=checkbox name=mark2 onClick='CheckAll();'></td>
-    <td class=td_center colspan=3>
+</thead>
+</table>
+
+<div>
+  <span class='left'><input type='checkbox' id='check_all_2'></span>
+  <div class='pagination'>
 EOT
 
     $i = int(($page - 1) / $PAGELINK) * $PAGELINK + 1;
     if ($i > $PAGELINK) {
-        print  "      [<a href='$script?mode=list'>1</a>]\n";
-        printf "      [<a href='$script?mode=list&amp;page=%d'>", $i - 1;
+        print  "    [<a href='$script?mode=list'>1</a>]\n";
+        printf "    [<a href='$script?mode=list&amp;page=%d'>", $i - 1;
         print  "$l{'prev'}</a>]\n";
     }
     for ($j = 0; $i <= $totalpage && $j < $PAGELINK; $i++, $j++) {
         if ($i == $page) {
-            print "      [$i]\n";
+            print "    [$i]\n";
         }
         else {
-            print "      [<a href='$script?mode=list&amp;page=$i'>$i</a>]\n";
+            print "    [<a href='$script?mode=list&amp;page=$i'>$i</a>]\n";
         }
     }
     if ($i <= $totalpage) {
-        print "      [<a href='$script?mode=list&amp;page=$i'>";
+        print "    [<a href='$script?mode=list&amp;page=$i'>";
         print "$l{'next'}</a>]\n";
-        print "      [<a href='$script?mode=list&amp;page=$totalpage'>";
+        print "    [<a href='$script?mode=list&amp;page=$totalpage'>";
         print "$totalpage</a>]\n";
     }
 
     print <<EOT;
-    </td>
-  </tr>
-</table>
+  </div>
+</div>
 
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td><hr></td>
-  </tr>
-</table>
-
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td><input type=submit value='$l{'delete_submit'}'></td>
-    <td class=td_right>
+<div class='nav-bottom'>
+  <input type='submit' value='$l{'delete_submit'}'>
+  <span class='right'>
 EOT
 
-    print "      <a href='$script?mode=list&amp;page=$page&amp;time=$time'>";
+    print "    <a href='$script?mode=list&amp;page=$page&amp;time=$time'>";
     print "$l{'reload'}</a> |\n";
 
     if ($page > 1) {
         printf "    <a href='$script?mode=list&amp;page=%d'>", $page - 1;
         print  "$l{'prev'}</a> |\n";
     }
-    else { print "      $l{'prev'} |\n"; }
+    else { print "    $l{'prev'} |\n"; }
 
     if ($page < $totalpage) {
         printf "    <a href='$script?mode=list&amp;page=%d'>", $page + 1;
         print  "$l{'next'}</a>\n";
     }
-    else { print "      $l{'next'}\n"; }
+    else { print "    $l{'next'}\n"; }
 
-    print "    </td>\n  </tr>\n</table>\n";
+    print <<EOT;
+  </span>
+</div>
+
+</form>
+</div>
+
+<script type='text/javascript'>
+window.onload = function() {
+  var Checked = null;
+
+  var CheckAll = function() {
+    var inputs = document.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; i++) {
+      if ('checkbox' != inputs[i].type) continue;
+      inputs[i].checked = Checked;
+    }
+  };
+
+  document.getElementById('check_all_1').onclick = function() {
+    Checked = this.checked;
+    CheckAll();
+  };
+
+  document.getElementById('check_all_2').onclick = function() {
+    Checked = this.checked;
+    CheckAll();
+  };
+};
+</script>
+EOT
+
     &Tail;
 }
 
@@ -304,78 +295,66 @@ sub Read {
     print $q->header(-charset=>'utf-8');
     &Head($m{'subject'});
     print <<EOT;
-  <tr>
-    <td class=td_right><a href='$script?mode=logout'>$l{'logout'}</a></td>
-  </tr>
-</table>
+<span class='right'><a href='$script?mode=logout'>$l{'logout'}</a></span>
 
-<form method=post action='$script'>
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td>
+<form method='post' action='$script'>
+<div class='nav-top'>
 EOT
 
-    print "      <a href='$script?mode=form&amp;type=compose";
+    print "    <a href='$script?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=reply&amp;num=$num";
+    print "    <a href='$script?mode=form&amp;type=reply&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
+    print "    <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply_all'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=forward&amp;num=$num";
+    print "    <a href='$script?mode=form&amp;type=forward&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=forward_attach";
+    print "    <a href='$script?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
     print "$l{'forward_attach'}</a> |\n";
-    print "      <a href='$script?mode=read&amp;type=headers&amp;num=$num";
+    print "    <a href='$script?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
 
     if ($mimepart eq '') {
-        print "      <a href='$script?mode=delete&amp;num=$num&amp;page=$page";
+        print "    <a href='$script?mode=delete&amp;num=$num&amp;page=$page";
         print "&amp;time=$time&amp;back=-1'>$l{'delete'}</a>\n";
     }
-    else { print "      $l{'delete'}\n"; }
+    else { print "    $l{'delete'}\n"; }
 
     print <<EOT;
-    </td>
-    <td class=td_right>
+  <span class='right'>
 EOT
 
     if ($num < $total) {
-        printf "      <a href='$script?mode=read&amp;num=%d", $num + 1;
+        printf "    <a href='$script?mode=read&amp;num=%d", $num + 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'prev'}</a> |\n";
     }
-    else { print "      $l{'prev'} |\n"; }
+    else { print "    $l{'prev'} |\n"; }
 
     if ($num > 1) {
-        printf "      <a href='$script?mode=read&amp;num=%d", $num - 1;
+        printf "    <a href='$script?mode=read&amp;num=%d", $num - 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'next'}</a> |\n";
     }
-    else { print "      $l{'next'} |\n"; }
+    else { print "    $l{'next'} |\n"; }
 
     if ($back == -1) {
-        print "      <a href='$script?mode=list&amp;page=$page";
+        print "    <a href='$script?mode=list&amp;page=$page";
         print "&amp;time=$time'>$l{'list'}</a>\n";
     }
     else {
-        print "      <a href='JavaScript:history.go(-$back);'>";
-        print "$l{'list'}</a>\n";
+        print "    <input type='button' class='history_go'";
+        print " value='$l{'list'}'>\n";
     }
 
     print <<EOT;
-    </td>
-  </tr>
-</table>
+  </span>
+</div>
 
-<table border=0 width='$WIDTH'>
+<table>
+<tbody>
   <tr>
-    <td><hr></td>
-  </tr>
-</table>
-
-<table border=0 width='$WIDTH' cellpadding=4>
-  <tr>
-    <th class=th_150>$l{'no'}</th>
+    <th class='th-fixed-width'>$l{'num'}</th>
     <td>$num / $total</td>
   </tr>
   <tr>
@@ -441,23 +420,10 @@ EOT
         print "  </td>\n  </tr>\n";
     }
 
-    print <<EOT;
-</table>
-
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td><hr></td>
-  </tr>
-</table>
-
-<table border=0 width='$WIDTH'>
-  <tr>
-EOT
-
     if ($type ne 'headers') {
-        print "  <td class='mail_body'>\n";
+        print "  <tr>\n    <td class='mail_body' colspan='2'>\n";
     }
-    else { print "  <td>\n"; }
+    else { print "  <tr>\n    <td colspan='2'>\n"; }
 
     if ($type eq 'headers') {
         print "<pre>" . &mEncodeHTML($m{'headers'}) . "</pre>";
@@ -467,71 +433,77 @@ EOT
     print <<EOT;
     </td>
   </tr>
+</tbody>
 </table>
 
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td><hr></td>
-  </tr>
-</table>
-
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td>
+<div class='nav-bottom'>
 EOT
 
-    print "      <a href='$script?mode=form&amp;type=compose";
+    print "    <a href='$script?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=reply&amp;num=$num";
+    print "    <a href='$script?mode=form&amp;type=reply&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
+    print "    <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply_all'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=forward&amp;num=$num";
+    print "    <a href='$script?mode=form&amp;type=forward&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
-    print "      <a href='$script?mode=form&amp;type=forward_attach";
+    print "    <a href='$script?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
     print "$l{'forward_attach'}</a> |\n";
-    print "      <a href='$script?mode=read&amp;type=headers&amp;num=$num";
+    print "    <a href='$script?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
 
     if ($mimepart eq '') {
-        print "      <a href='$script?mode=delete&amp;num=$num";
+        print "    <a href='$script?mode=delete&amp;num=$num";
         print "&amp;page=$page&amp;time=$time&amp;back=-1'>";
         print "$l{'delete'}</a>\n";
     }
-    else { print "      $l{'delete'}\n"; }
+    else { print "    $l{'delete'}\n"; }
 
     print <<EOT;
-    </td>
-    <td class=td_right>
+  <span class='right'>
 EOT
 
     if ($num < $total) {
-        printf "      <a href='$script?mode=read&amp;num=%d", $num + 1;
+        printf "    <a href='$script?mode=read&amp;num=%d", $num + 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'prev'}</a> |\n";
     }
-    else { print "      $l{'prev'} |\n"; }
+    else { print "    $l{'prev'} |\n"; }
 
     if ($num > 1) {
-        printf "      <a href='$script?mode=read&amp;num=%d", $num - 1;
+        printf "    <a href='$script?mode=read&amp;num=%d", $num - 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'next'}</a> |\n";
     }
-    else { print "      $l{'next'} |\n"; }
+    else { print "    $l{'next'} |\n"; }
 
     if ($back == -1) {
-        print "      <a href='$script?mode=list&amp;page=$page";
+        print "    <a href='$script?mode=list&amp;page=$page";
         print "&amp;time=$time'>$l{'list'}</a>\n";
     }
     else {
-        print "      <a href='JavaScript:history.go(-$back);'>";
-        print "$l{'list'}</a>\n";
+        print "    <input type='button' class='history_go'";
+        print " value='$l{'list'}'>\n";
     }
 
     print <<EOT;
-    </td>
-  </tr>
-</table>
+  </span>
+</div>
+
+</form>
+</div>
+
+<script type='text/javascript'>
+window.onload = function() {
+  var inputs = document.getElementsByTagName('input');
+  for (var i = 0; i < inputs.length; i++) {
+    if ('button' != inputs[i].type) continue;
+    inputs[i].onclick = function() {
+      history.go(-$back);
+    }
+  }
+}
+</script>
 EOT
     &Tail;
 }
@@ -570,11 +542,10 @@ sub Form {
     $to = $q->param('to');
     $subject = $q->param('subject');
 
+    &mUSER;
+    &mPASS;
     if ($type ne 'compose') {
-        &mUSER;
-        &mPASS;
         &mRETR($num, $mimepart);
-        &mQUIT;
 
         $body = $m{'body'};
         $body =~ s/<br>/\r\n/gi;
@@ -582,6 +553,7 @@ sub Form {
         $body =~ s/\r\n\r\n/\r\n/g;
         $body =~ s/\r\n/\r\n>\ /g;
     }
+    &mQUIT;
 
     if ($type =~ /reply/) {
         $to = $m{'from'};
@@ -610,45 +582,43 @@ sub Form {
     print $q->header(-charset=>'utf-8');
     &Head($l{$type});
     print <<EOT;
-  <tr>
-    <td class=td_right><a href='$script?mode=logout'>$l{'logout'}</a></td>
-  </tr>
-</table>
+<span class='right'><a href='$script?mode=logout'>$l{'logout'}</a></span>
 
-<form method=post action='$script' enctype='multipart/form-data'>
-<table border=0>
+<form method='post' action='$script' enctype='multipart/form-data'>
+<table>
+<tbody>
   <tr>
-    <th class=th_150>$l{'sender'}</th>
+    <th class='th-fixed-width'>$l{'sender'}</th>
     <td>
-      <input type=text name=from size=40 value='<$email>'>
-      <input type=hidden name=mode value='send'>
-      <input type=hidden name=type value='$type'>
-      <input type=hidden name=num value='$num'>
-      <input type=hidden name=page value='$page'>
+      <input type='text' name='from' class='input-text' value='<$email>'>
+      <input type='hidden' name='mode' value='send'>
+      <input type='hidden' name='type' value='$type'>
+      <input type='hidden' name='num' value='$num'>
+      <input type='hidden' name='page' value='$page'>
     </td>
   </tr>
   <tr>
     <th>$l{'receiver'}</th>
-    <td><input type=text name=to size=40 value='$to'></td>
+    <td><input type='text' name='to' class='input-text' value='$to'></td>
   </tr>
   <tr>
     <th>$l{'cc'}</th>
-    <td><input type=text name=cc size=40 value='$cc'></td>
+    <td><input type='text' name='cc' class='input-text' value='$cc'></td>
   </tr>
   <tr>
     <th>$l{'bcc'}</th>
-    <td><input type=text name=bcc size=40></td>
+    <td><input type='text' name='bcc' class='input-text'></td>
   </tr>
   <tr>
     <th>$l{'subject'}</th>
-    <td><input type=text name=subject size=40 value='$subject'></td>
+    <td><input type='text' name='subject' class='input-text' value='$subject'></td>
   </tr>
   <tr>
     <th>$l{'smtp_server'}</th>
-    <td><input type=text name=smtp_server size=40 value='$pop3_server'></td>
+    <td><input type='text' name='smtp_server' class='input-text' value='$pop3_server'></td>
   </tr>
   <tr>
-    <td colspan=2><textarea name=body rows=20 cols=75>
+    <td colspan='2'><textarea name='body' rows='20' cols='80'>
 EOT
 
     if ($type =~ /reply/ || $type eq 'forward') {
@@ -671,15 +641,15 @@ EOT
   </tr>
   <tr>
     <th>$l{'attachment'}</th>
-    <td><input type=file name=file1 size=40></td>
+    <td><input type='file' name='file1'></td>
   </tr>
   <tr>
     <th>$l{'attachment'}</th>
-    <td><input type=file name=file2 size=40></td>
+    <td><input type='file' name='file2'></td>
   </tr>
   <tr>
     <th>$l{'attachment'}</th>
-    <td><input type=file name=file3 size=40></td>
+    <td><input type='file' name='file3'></td>
   </tr>
 EOT
 
@@ -723,21 +693,35 @@ EOT
 
     if ($type eq 'forward_attach') {
         print "  <tr>  <th>$l{'attachment'}</th>\n";
-        print "  <td><input type=checkbox name=attachment value='0' checked>";
+        print "  <td><input type='checkbox' name='attachment' value='0' checked>";
         print "$m{'subject'}(" . &mSize($m{'headers'}) . ")</td>\n  </tr>\n";
     }
 
     print <<EOT;
-  <tr>
-    <td colspan=2><hr></td>
-  </tr>
-  <tr>
-    <td><input type=submit value='$l{'send_submit'}'></td>
-    <td class=td_right>
-      <a href='javascript:history.back();'>$l{'cancel'}</a>
-    </td>
-  </tr>
+</tbody>
 </table>
+
+<div class='nav-bottom'>
+    <input type='submit' value='$l{'send_submit'}'>
+  <span class='right'>
+    <input type='button' class='history_go' value='$l{'cancel'}'>
+  </span>
+</div>
+
+</form>
+</div>
+
+<script type='text/javascript'>
+window.onload = function() {
+  var inputs = document.getElementsByTagName('input');
+  for (var i = 0; i < inputs.length; i++) {
+    if ('button' != inputs[i].type) continue;
+    inputs[i].onclick = function() {
+      history.go(-1);
+    }
+  }
+}
+</script>
 EOT
     &Tail;
 }
@@ -789,12 +773,12 @@ sub Send {
         $body = &mEncodeBase64($body);
     }
 
+    &mUSER;
+    &mPASS;
     if ($num > 0) {
-        &mUSER;
-        &mPASS;
         &mRETR($num, $mimepart);
-        &mQUIT;
     }
+    &mQUIT;
 
     socket($N, 2, 1, 6);
 
@@ -972,7 +956,7 @@ sub Send {
 
     print $q->header(-charset=>'utf-8');
     if ($userid ne '') { &Reload("$script?mode=list&amp;page=$page"); }
-    else { &Reload('/'); }
+    else { &Reload($script); }
 }
 
 sub Download {
@@ -1060,39 +1044,32 @@ sub LoginForm {
     print $q->header(-charset=>'utf-8');
     &Head($l{'login_title'});
     print <<EOT;
-  <tr>
-    <td class=td_right>
-      <a href='http://www.geeksen.com'>Download Source</a>
-    </td>
-  </tr>
-</table>
+<span class='right'><a href='http://www.geeksen.com'>Download Source</a></span>
 
-<form method=post action='$script'>
-<table border=0>
-  <tr>
-    <td>$l{'userid'}</td>
-    <td>
-      <input type=text name=userid value='' size=20>
-      <input type=hidden name=mode value='list'>
-    </td>
-  </tr>
-  <tr>
-    <td>$l{'passwd'}</td>
-    <td><input type=password name=passwd size=20></td>
-  </tr>
-  <tr>
-    <td>$l{'pop3_server'}</td>
-    <td>
-      <input type=text name=pop3_server value='' size=20>
-      <input type=submit value='$l{'login_submit'}'></td>
-  </tr>
-</table>
+<form method='post' action='$script'>
+<fieldset>
 
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td><hr></td>
-  </tr>
-</table>
+<div>
+  <label for='userid'>$l{'userid'}</label>
+  <input type='text' id='userid' name='userid' value=''>
+  <input type='hidden' name='mode' value='list'>
+</div>
+
+<div>
+  <label for='passwd'>$l{'passwd'}</label>
+  <input type='password' id='passwd' name='passwd'>
+</div>
+
+<div>
+  <label for='pop3_server'>$l{'pop3_server'}</label>
+  <input type='text' id='pop3_server' name='pop3_server'>
+  <input type='submit' value='$l{'login_submit'}'>
+</div>
+
+</fieldset>
+</form>
+
+</div>
 EOT
     &Tail;
 }
@@ -1101,31 +1078,64 @@ sub Head {
     my $title = $_[0];
 
     print <<EOT;
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
-  'http://www.w3.org/TR/html4/strict.dtd'>
+<!DOCTYPE html>
 
 <html>
 <head>
   <title>Geeksen Mail</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <meta name='viewport' content='initial-scale=1'>
   <style type='text/css'>
-    body, td {
-      background-color:#ffffff; color:#666666;
-      font-size:9pt; font-family:tahoma, geneva, sans-serif;
+    body {
+      background-color:#fff; color:#666;
+      font-size:.8em; font-family:tahoma, geneva, sans-serif;
     }
+
+    .root { width:770px }
+
+    .left { float:left }
+    .right { float:right }
+
+    a { color:#06c; text-decoration:none }
+    a:hover { color:#06c; text-decoration:underline }
+
+    h2 { color:#666; font-weight:normal }
+
+    form { clear:both; margin:0 }
+    fieldset {
+      border:1px solid #eee; padding-left:1.5em; padding-bottom:1.5em
+    }
+    label {
+      margin-top:1.2em; margin-bottom:.2em; display:block; font-weight:bold
+    }
+
+    input { font-family:tahoma, geneva, sans-serif }
+    .input-text { width:400px; }
+
+    textarea {
+      width:740px; height:300px;
+      font-family:tahoma, geneva, sans-serif
+    }
+
+    .nav-top { margin-bottom:.5em }
+    .nav-bottom { margin-top:.5em }
+
+    table { width:100%; border:1px solid #ddd; border-collapse:collapse }
+    table thead tr:hover { background-color:#eee }
+
     th {
-      background-color:#666666; color:#ffffff;
-      font-size:9pt; font-family:tahoma, geneva, sans-serif;
+      background-color:#eee;
+      border:1px solid #ddd; border-collapse:collapse; padding:.5em
     }
-    input, select { font-size:9pt; font-family:tahoma, geneva, sans-serif; }
-    img { border:0px; }
-    hr { height:1px; }
-    .th_150 { width:150px; }
-    .td_right { text-align:right; }
-    .td_center { text-align:center; }
-    .large { color:#666666; font-size:14pt; font-family:tahoma, geneva, sans-serif; }
-    .list_bg1 { background-color:#ffffff; }
-    .list_bg2 { background-color:#eeeeee; }
+    td { border:1px solid #ddd; border-collapse:collapse; padding:.5em }
+    .th-fixed-width { width:150px }
+
+    .pagination {
+       border-bottom:1px solid #ddd;
+       margin-top:.5em; padding-bottom:.8em; text-align:center
+    }
+    .history_go { border:0; background-color:#fff; color:#06c }
+
     .mail_body {
 EOT
 
@@ -1138,27 +1148,19 @@ EOT
 
     print <<EOT;
     }
-
-    a:link { color:#0066cc; text-decoration:none; }
-    a:active { color:#0066cc; text-decoration:none; }
-    a:visited { color:#0066cc; text-decoration:none; }
-    a:hover { color:#0066cc; text-decoration:underline; }
   </style>
 </head>
 
 <body>
+<div class='root'>
 
-<table border=0 width='$WIDTH'>
-  <tr>
-    <td class='large'>$title</td>
-  </tr>
+<h2 class='left'>$title</h2>
 EOT
 }
 
 sub Tail {
     print <<EOT;
 
-</form>
 </body>
 </html>
 EOT
@@ -1169,7 +1171,7 @@ sub Error {
 
     print $q->header(-charset=>'utf-8');
     &Head($message);
-    print "</table>\n</body>\n</html>";
+    print "</div>\n</body>\n</html>";
 
     exit;
 }
@@ -1177,7 +1179,7 @@ sub Error {
 sub Reload {
     my $url = $_[0];
 
-    print "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'>";
+    print "<!DOCTYPE html>";
     print "\n\n";
     print "<html>\n<head>\n";
     print "  <title>Reload</title>\n";
@@ -1904,7 +1906,7 @@ sub mLocale {
 
         $l{'total'} = '메시지';
         $l{'page'} = '페이지';
-        $l{'no'} = '번호';
+        $l{'num'} = '번호';
         $l{'from'} = '보낸 사람';
         $l{'to'} = '받은 사람';
         $l{'sender'} = '보내는 사람';
@@ -1958,7 +1960,7 @@ sub mLocale {
 
         $l{'total'} = 'Total';
         $l{'page'} = 'Page';
-        $l{'no'} = 'No.';
+        $l{'num'} = 'No.';
         $l{'from'} = 'From';
         $l{'to'} = 'To';
         $l{'sender'} = 'From';
