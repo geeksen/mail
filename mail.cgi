@@ -1630,7 +1630,7 @@ sub mRETR {
 
     $attachment_count = $i;
 
-    $bgcolor = '#ffffff';
+    $bgcolor = '#fff';
     if ($content_type =~ /text\/html/i) {
         $body =~ s/=["']+mailto:([A-Za-z0-9-_\.]+@[A-Za-z0-9-_\.]+)["']+/='$script\?mode=form&amp;type=compose&amp;to=$1'/gi;
         $body =~ s/=["']+$script\?mode=form&amp;type=compose&amp;to=(.*)\?subject=(.*)["']+/='$script\?mode=form&amp;type=compose&amp;to=$1&amp;subject=$2'/gi;
