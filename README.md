@@ -27,8 +27,9 @@ Check
 
 * (modify the first line of source code, if necessary)
 * vi mail.cgi
-> #!/usr/local/bin/perl
-
+```perl
+#!/usr/local/bin/perl
+```
 * perl -c mail.cgi
 
 
