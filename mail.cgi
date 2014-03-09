@@ -157,7 +157,7 @@ EOT
 <table class='hover'>
   <tr>
     <th>
-      <input type='checkbox' id='check_all_1'>
+      <input type='checkbox' name='check_all'>
       $l{'num'}
       <input type='hidden' name='mode' value='delete'>
       <input type='hidden' name='page' value='$page'>
@@ -195,7 +195,7 @@ EOT
 </table>
 
 <div>
-  <span class='left'><input type='checkbox' id='check_all_2'></span>
+  <span class='left'><input type='checkbox' name='check_all'></span>
   <div class='pagination'>
 EOT
 
@@ -259,16 +259,15 @@ window.onload = function() {
       if ('checkbox' != inputs[i].type) continue;
       inputs[i].checked = checked;
     }
-  };
+  }
 
-  document.getElementById('check_all_1').onclick = function() {
-    CheckAll(this.checked);
-  };
-
-  document.getElementById('check_all_2').onclick = function() {
-    CheckAll(this.checked);
-  };
-};
+  var checkall_checkboxes = document.getElementsByName('check_all');
+  for (var i = 0; i < checkall_checkboxes.length; i++) {
+    checkall_checkboxes[i].onclick = function() {
+      CheckAll(this.checked);
+    }
+  }
+}
 </script>
 EOT
 
@@ -1038,19 +1037,19 @@ sub LoginForm {
 <fieldset>
 
 <div>
-  <label for='userid'>$l{'userid'}</label>
-  <input type='text' id='userid' name='userid' value=''>
+  <label>$l{'userid'}</label>
+  <input type='text' name='userid'>
   <input type='hidden' name='mode' value='list'>
 </div>
 
 <div>
-  <label for='passwd'>$l{'passwd'}</label>
-  <input type='password' id='passwd' name='passwd'>
+  <label>$l{'passwd'}</label>
+  <input type='password' name='passwd'>
 </div>
 
 <div>
-  <label for='pop3_server'>$l{'pop3_server'}</label>
-  <input type='text' id='pop3_server' name='pop3_server'>
+  <label>$l{'pop3_server'}</label>
+  <input type='text' name='pop3_server'>
   <input type='submit' value='$l{'login_submit'}'>
 </div>
 
