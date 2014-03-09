@@ -29,6 +29,7 @@ Check
 * vi mail.cgi
 > #!/usr/local/bin/perl
 
+
 Chmod
 -----
 * chmod a+x mail.cgi
