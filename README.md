@@ -7,6 +7,7 @@ Enable CGI
 * cd /etc/apache2/mods-available
 * sudo vi mime.conf
 > AddHandler cgi-script .cgi
+
 * cd /etc/apache2/sites-enabled
 * sudo vi 000-default
 > &lt;Directory /var/www&gt; .. Options ExecCGI .. &lt;/Directory&gt;
@@ -22,9 +23,11 @@ Install mail.cgi
 Check
 -----
 * which perl
-* modify the first line of source code, if necessary 
+> /usr/local/bin/perl
+
+* (modify the first line of source code, if necessary)
 * vi mail.cgi
-* perl -c mail.cgi
+> #!/usr/local/bin/perl
 
 Chmod
 -----
@@ -33,3 +36,4 @@ Chmod
 Run
 ---
 * Go to http://your.web.server/mail/mail.cgi
+
