@@ -337,7 +337,7 @@ EOT
         print "&amp;time=$time'>$l{'list'}</a>\n";
     }
     else {
-        print "    <input type='button' class='history_go'";
+        print "    <input type='button' name='list' class='history_go'";
         print " value='$l{'list'}'>\n";
     }
 
@@ -474,7 +474,7 @@ EOT
         print "&amp;time=$time'>$l{'list'}</a>\n";
     }
     else {
-        print "    <input type='button' class='history_go'";
+        print "    <input type='button' name='list' class='history_go'";
         print " value='$l{'list'}'>\n";
     }
 
@@ -487,10 +487,9 @@ EOT
 
 <script type='text/javascript'>
 window.onload = function() {
-  var inputs = document.getElementsByTagName('input');
-  for (var i = 0; i < inputs.length; i++) {
-    if ('button' != inputs[i].type) continue;
-    inputs[i].onclick = function() {
+  var list_buttons = document.getElementsByName('list');
+  for (var i = 0; i < list_buttons.length; i++) {
+    list_buttons[i].onclick = function() {
       history.go(-$back);
     }
   }
@@ -694,7 +693,7 @@ EOT
 <div class='nav-bottom'>
     <input type='submit' value='$l{'send_submit'}'>
   <span class='right'>
-    <input type='button' class='history_go' value='$l{'cancel'}'>
+    <input type='button' name='cancel' class='history_go' value='$l{'cancel'}'>
   </span>
 </div>
 
@@ -703,10 +702,9 @@ EOT
 
 <script type='text/javascript'>
 window.onload = function() {
-  var inputs = document.getElementsByTagName('input');
-  for (var i = 0; i < inputs.length; i++) {
-    if ('button' != inputs[i].type) continue;
-    inputs[i].onclick = function() {
+  var cancel_buttons = document.getElementsByName('cancel');
+  for (var i = 0; i < cancel_buttons.length; i++) {
+    cancel_buttons[i].onclick = function() {
       history.go(-1);
     }
   }
