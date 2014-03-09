@@ -29,6 +29,8 @@ Check
 * vi mail.cgi
 > #!/usr/local/bin/perl
 
+* perl -c mail.cgi
+
 
 Chmod
 -----
