@@ -1273,7 +1273,7 @@ sub mTOP {
         }
         elsif ($tmp =~ /^Content-Type:\s*(.*)$/i ||
             ($flag eq 'type' && $tmp =~ /^\s(.*)$/)) {
-            $content_type .= " $1";
+            $content_type .= $1;
             $flag = 'type';
             $content_type =~ s/\s//g;
             if ($content_type =~ /^.*charset=(.*)/i) {
@@ -1396,7 +1396,7 @@ sub mRETR {
                 }
                 elsif ($tmp =~ /^Content-Type:\s*(.*)$/i ||
                     ($flag eq 'type' && $tmp =~ /^\s(.*)$/)) {
-                    $content_type .= " $1";
+                    $content_type .= $1;
                     $flag = 'type';
                     $content_type =~ s/\s//g;
                     if ($content_type =~ /^.*charset=(.*)/i) {
@@ -1470,7 +1470,7 @@ sub mRETR {
                     if ($flag ne 'body') {
                         if ($tmp =~ /^Content-Type:\s*(.*)$/i ||
                             ($flag eq 'type' && $tmp =~ /^\s(.*)$/)) {
-                            $part_type .= " $1";
+                            $part_type .= $1;
                             $flag = 'type';
                             $part_type =~ s/\s//g;
                             if ($part_type =~ /^.*charset=(.*)/i) {
@@ -1499,7 +1499,7 @@ sub mRETR {
                         elsif ($tmp =~ /^Content-Disposition:\s*(.*)$/i ||
                             ($flag eq 'disposition' &&
                             $tmp =~ /^\s(.*)$/)) {
-                            $part_disposition .= " $1";
+                            $part_disposition .= $1;
                             $flag = 'disposition';
                             $part_disposition =~ s/\s//g;
                             if ($part_disposition =~ /.*name=(.*)/i) {
@@ -1564,7 +1564,7 @@ sub mRETR {
                             }
                             elsif ($tmp =~ /^Content-Type:\s*(.*)$/i ||
                                 ($flag eq 'type' && $tmp =~ /^\s(.*)$/)) {
-                                $part_type_message .= " $1";
+                                $part_type_message .= $1;
                                 $flag = 'type';
                                 $part_type =~ s/\s//g;
                                 if ($part_type_message =~ /^.*charset=(.*)/i) {
