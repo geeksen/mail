@@ -47,6 +47,8 @@ my $q;
 
 my $script = $ENV{'SCRIPT_NAME'};
 my $server = $ENV{'SERVER_NAME'};
+my $server_port = $ENV{'SERVER_PORT'};
+my $remote_addr = $ENV{'REMOTE_ADDR'};
 
 my $N;
 my $M;
@@ -853,8 +855,8 @@ sub Send {
     print $N "Subject: $subject\r\n";
     print $N "Date: $date\r\n";
     print $N "MIME-Version: 1.0\r\n";
-    print $N "X-Mailer: http://$server$script\r\n";
-    print $N "X-Sender-IP: $ENV{'REMOTE_ADDR'}\r\n";
+    print $N "X-Mailer: $server$server_port$script\r\n";
+    print $N "X-Sender-IP: $remote_addr\r\n";
 
     if (scalar(@attachment) > 0 ||
         $filehandle1 ne '' || $filehandle2 ne '' || $filehandle3 ne '') {
