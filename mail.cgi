@@ -294,26 +294,26 @@ sub Read {
 <div class='nav-top'>
 EOT
 
-    print "    <a href='$script?mode=form&amp;type=compose";
+    print "  <a href='$script?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=reply&amp;num=$num";
+    print "  <a href='$script?mode=form&amp;type=reply&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
+    print "  <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply_all'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=forward&amp;num=$num";
+    print "  <a href='$script?mode=form&amp;type=forward&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=forward_attach";
+    print "  <a href='$script?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
-    print "$l{'forward_attach'}</a> |\n";
-    print "    <a href='$script?mode=read&amp;type=headers&amp;num=$num";
+    print "$'forward_attach'}</a> |\n";
+    print "  <a href='$script?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
 
     if ($mimepart eq '') {
-        print "    <a href='$script?mode=delete&amp;num=$num&amp;page=$page";
+        print "  <a href='$script?mode=delete&amp;num=$num&amp;page=$page";
         print "&amp;time=$time&amp;back=-1'>$l{'delete'}</a>\n";
     }
-    else { print "    $l{'delete'}\n"; }
+    else { print "  $l{'delete'}\n"; }
 
     print <<EOT;
   <span class='right'>
@@ -430,27 +430,27 @@ EOT
 <div class='nav-bottom'>
 EOT
 
-    print "    <a href='$script?mode=form&amp;type=compose";
+    print "  <a href='$script?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=reply&amp;num=$num";
+    print "  <a href='$script?mode=form&amp;type=reply&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
+    print "  <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply_all'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=forward&amp;num=$num";
+    print "  <a href='$script?mode=form&amp;type=forward&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
-    print "    <a href='$script?mode=form&amp;type=forward_attach";
+    print "  <a href='$script?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
     print "$l{'forward_attach'}</a> |\n";
-    print "    <a href='$script?mode=read&amp;type=headers&amp;num=$num";
+    print "  <a href='$script?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
 
     if ($mimepart eq '') {
-        print "    <a href='$script?mode=delete&amp;num=$num";
+        print "  <a href='$script?mode=delete&amp;num=$num";
         print "&amp;page=$page&amp;time=$time&amp;back=-1'>";
         print "$l{'delete'}</a>\n";
     }
-    else { print "    $l{'delete'}\n"; }
+    else { print "  $l{'delete'}\n"; }
 
     print <<EOT;
   <span class='right'>
@@ -690,7 +690,7 @@ EOT
 </table>
 
 <div class='nav-bottom'>
-    <input type='submit' value='$l{'send_submit'}'>
+  <input type='submit' value='$l{'send_submit'}'>
   <span class='right'>
     <input type='button' name='cancel' class='history_go' value='$l{'cancel'}'>
   </span>
