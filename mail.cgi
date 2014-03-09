@@ -621,7 +621,7 @@ EOT
         print $body;
     }
     elsif ($type eq 'forward_attach') {
-        print $l{'original_message_attachedd'};
+        print $l{'original_message_attached'};
     }
 
     print <<EOT;
@@ -1905,7 +1905,7 @@ sub mLocale {
         $l{'smtp_server'} = '보내는 메일서버';
         $l{'attachment'} = '첨부파일';
         $l{'original_message'} = '원본 메시지';
-        $l{'original_message_attachedd'} = '원본 메시지가 첨부되었습니다.';
+        $l{'original_message_attached'} = '원본 메시지가 첨부되었습니다.';
 
         $l{'reload'} = '새로고침';
         $l{'prev'} = '이전';
@@ -1959,7 +1959,7 @@ sub mLocale {
         $l{'smtp_server'} = 'SMTP Server';
         $l{'attachment'} = 'Attachment';
         $l{'original_message'} = 'Original Message';
-        $l{'original_message_attachedd'} = 'Original Message Attached.';
+        $l{'original_message_attached'} = 'Original Message Attached.';
 
         $l{'reload'} = 'Reload';
         $l{'prev'} = 'Prev';
