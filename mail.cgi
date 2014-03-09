@@ -1070,7 +1070,7 @@ sub Head {
 <html>
 <head>
   <title>Geeksen Mail</title>
-  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <meta charset='utf-8'>
   <meta name='viewport' content='initial-scale=1'>
   <style type='text/css'>
     body {
