@@ -253,24 +253,20 @@ EOT
 
 <script type='text/javascript'>
 window.onload = function() {
-  var Checked = null;
-
-  var CheckAll = function() {
+  var CheckAll = function(checked) {
     var inputs = document.getElementsByTagName('input');
     for (var i = 0; i < inputs.length; i++) {
       if ('checkbox' != inputs[i].type) continue;
-      inputs[i].checked = Checked;
+      inputs[i].checked = checked;
     }
   };
 
   document.getElementById('check_all_1').onclick = function() {
-    Checked = this.checked;
-    CheckAll();
+    CheckAll(this.checked);
   };
 
   document.getElementById('check_all_2').onclick = function() {
-    Checked = this.checked;
-    CheckAll();
+    CheckAll(this.checked);
   };
 };
 </script>
