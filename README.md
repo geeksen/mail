@@ -23,15 +23,13 @@ Install mail.cgi
 Check
 -----
 * which perl
-> /usr/local/bin/perl
+> /usr/bin/perl
 
-* (modify the first line of source code, if necessary)
+* (if necessary, modify the first line of source code)
 * vi mail.cgi
 ```perl
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 ```
-* perl -c mail.cgi
-
 
 Chmod
 -----
