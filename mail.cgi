@@ -855,7 +855,7 @@ sub Send {
     print $N "Subject: $subject\r\n";
     print $N "Date: $date\r\n";
     print $N "MIME-Version: 1.0\r\n";
-    print $N "X-Mailer: $server$server_port$script\r\n";
+    print $N "X-Mailer: $server:$server_port$script\r\n";
     print $N "X-Sender-IP: $remote_addr\r\n";
 
     if (scalar(@attachment) > 0 ||
