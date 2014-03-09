@@ -46,7 +46,7 @@ my %l;
 my $q;
 
 my $script = $ENV{'SCRIPT_NAME'};
-my $domain = $ENV{'SERVER_NAME'};
+my $server = $ENV{'SERVER_NAME'};
 
 my $N;
 my $M;
@@ -115,19 +115,19 @@ sub List {
             -name=>'mUSERID',
             -value=>$userid,
             -path=>'/',
-            -domain=>$domain,
+            -domain=>$server,
         );
         $cookie2 = $q->cookie(
             -name=>'mPASSWD',
             -value=>pack('u', $passwd),
             -path=>'/',
-            -domain=>$domain,
+            -domain=>$server,
         );
         $cookie3 = $q->cookie(
             -name=>'mSERVER',
             -value=>$pop3_server,
             -path=>'/',
-            -domain=>$domain,
+            -domain=>$server,
         );
 
         print $q->header(
@@ -860,7 +860,7 @@ sub Send {
     print $N "Subject: $subject\r\n";
     print $N "Date: $date\r\n";
     print $N "MIME-Version: 1.0\r\n";
-    print $N "X-Mailer: http://$ENV{'SERVER_NAME'}$script\r\n";
+    print $N "X-Mailer: http://$server$script\r\n";
     print $N "X-Sender-IP: $ENV{'REMOTE_ADDR'}\r\n";
 
     if ($#attachment > -1 ||
@@ -1012,19 +1012,19 @@ sub Logout {
         -name=>'mUSERID',
         -value=>'',
         -path=>'/',
-        -domain=>$domain,
+        -domain=>$server,
     );
     $cookie2 = $q->cookie(
         -name=>'mPASSWD',
         -value=>'',
         -path=>'/',
-        -domain=>$domain,
+        -domain=>$server,
     );
     $cookie3 = $q->cookie(
         -name=>'mSERVER',
         -value=>'',
         -path=>'/',
-        -domain=>$domain,
+        -domain=>$server,
     );
 
     print $q->header(
