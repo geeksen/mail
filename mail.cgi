@@ -552,7 +552,7 @@ sub Form {
         @tmp = split(/[,;]/, $cc);
         $cc = '';
 
-        for ($i = 0; $i <= $#tmp; $i++) {
+        for ($i = 0; $i <= scalar(@tmp); $i++) {
             if ($tmp[$i] =~ /$email/) { next; }
             if ($i > 0 && $cc ne '') { $cc .= ', '; }
             if ($tmp[$i] =~ /@/) { $cc .= $tmp[$i]; }
@@ -621,7 +621,7 @@ EOT
         print $body;
     }
     elsif ($type eq 'forward_attach') {
-        print $l{'original_message_included'};
+        print $l{'original_message_attachedd'};
     }
 
     print <<EOT;
@@ -856,7 +856,7 @@ sub Send {
     print $N "X-Mailer: http://$server$script\r\n";
     print $N "X-Sender-IP: $ENV{'REMOTE_ADDR'}\r\n";
 
-    if ($#attachment > -1 ||
+    if (scalar(@attachment) > 0 ||
         $filehandle1 ne '' || $filehandle2 ne '' || $filehandle3 ne '') {
         print $N "Content-Type: multipart/mixed;";
         print $N " boundary=\"$boundary\"\r\n\r\n";
@@ -866,7 +866,7 @@ sub Send {
         print $N "Content-Transfer-Encoding: $encoding\r\n\r\n";
     }
 
-    if ($#attachment > -1 ||
+    if (scalar(@attachment) > 0 ||
         $filehandle1 ne '' || $filehandle2 ne '' || $filehandle3 ne '') {
         print $N "--$boundary\r\n";
         print $N "Content-Type: text/plain; charset=utf-8\r\n";
@@ -1100,7 +1100,7 @@ sub Head {
     .input-text { width:400px; }
 
     textarea {
-      width:740px; height:300px;
+      width:740px; height:300px; font-size:1em;
       font-family:tahoma, geneva, sans-serif
     }
 
@@ -1324,8 +1324,8 @@ sub mRETR {
     my ($from, $to, $cc, $subject, $date, $body);
     my ($headers, $charset, $boundary);
     my ($content_type, $content_encoding);
-    my ($part, $part_name, $part_type, $part_body, $part_size);
-    my ($part_charset, $part_boundary, $part_encoding);
+    my ($part, $part_name, $part_type, $part_type_message);
+    my ($part_body, $part_size, $part_charset, $part_boundary, $part_encoding);
     my ($part_disposition, $part_content_id);
     my ($attachment_count, $bgcolor, $background);
     my (@tmp, @part, @mimepart);
@@ -1343,7 +1343,7 @@ sub mRETR {
 
     $flag_mimepart = 0;
     @mimepart = split(/\./, $mMIMEPART);
-    @mimepart = splice(@mimepart, 1, $#mimepart);
+    @mimepart = splice(@mimepart, 1, scalar(@mimepart) - 1);
 
     while (1) {
         $headers = $TMP;
@@ -1438,7 +1438,7 @@ sub mRETR {
             @tmp = split(/\n/, $TMP);
             $TMP = '';
             $j = 0;
-            $#part = -1;
+            @part = ();
 
             # We don't use split here. Sometimes, Boundary and
             # alternavtie boundary are almost identical.
@@ -1447,7 +1447,7 @@ sub mRETR {
                 elsif ($tmp eq "--$boundary\r") { $j++; }
                 else { $part[$j] .= "$tmp\n"; }
             }
-            @part = splice(@part, 1, $#part);
+            @part = splice(@part, 1, scalar(@part) - 1);
 
             foreach $part (@part) {
                 $TMP = '';
@@ -1564,14 +1564,14 @@ sub mRETR {
                             }
                             elsif ($tmp =~ /^Content-Type:\s*(.*)$/i ||
                                 ($flag eq 'type' && $tmp =~ /^\s(.*)$/)) {
-                                $part_type .= " $1";
+                                $part_type_message .= " $1";
                                 $flag = 'type';
                                 $part_type =~ s/\s//g;
-                                if ($part_type =~ /^.*charset=(.*)/i) {
+                                if ($part_type_message =~ /^.*charset=(.*)/i) {
                                     $part_charset = $1;
                                     $part_charset =~ s/[\r"]//g;
                                     $part_charset =~ s/;\s.*$//g;
-                                    $part_type =~ s/;\s.*$//g;
+                                    $part_type_message =~ s/;\s.*$//g;
                                     $flag = '';
                                 }
                             }
@@ -1614,7 +1614,7 @@ sub mRETR {
             }
         }
 
-        if ($flag_mimepart <= $#mimepart) {
+        if ($flag_mimepart < scalar(@mimepart)) {
             $TMP = $m{'attachment'}->[$mimepart[$flag_mimepart]]->{'body'};
             $flag_mimepart++;
         }
@@ -1905,7 +1905,7 @@ sub mLocale {
         $l{'smtp_server'} = '보내는 메일서버';
         $l{'attachment'} = '첨부파일';
         $l{'original_message'} = '원본 메시지';
-        $l{'original_message_included'} = '원본 메시지가 첨부되었습니다.';
+        $l{'original_message_attachedd'} = '원본 메시지가 첨부되었습니다.';
 
         $l{'reload'} = '새로고침';
         $l{'prev'} = '이전';
@@ -1959,7 +1959,7 @@ sub mLocale {
         $l{'smtp_server'} = 'SMTP Server';
         $l{'attachment'} = 'Attachment';
         $l{'original_message'} = 'Original Message';
-        $l{'original_message_included'} = 'Original Message Included.';
+        $l{'original_message_attachedd'} = 'Original Message Attached.';
 
         $l{'reload'} = 'Reload';
         $l{'prev'} = 'Prev';
