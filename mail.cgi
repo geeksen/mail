@@ -304,7 +304,7 @@ EOT
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
     print "  <a href='$script?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
-    print "$'forward_attach'}</a> |\n";
+    print "$l{'forward_attach'}</a> |\n";
     print "  <a href='$script?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
