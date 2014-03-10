@@ -32,8 +32,9 @@ use CGI qw/:param :header :upload/;
 use Encode;
 
 # Conf
-my $LOCALE = 'en';           # ko, en ..
-my $TIMEZONE = '+0900';      # +0900, KST, GMT ..
+my $ENCKEY = 'too_many_secrets'; # encryption key
+my $LOCALE = 'en';               # ko, en ..
+my $TIMEZONE = '+0900';          # +0900, KST, GMT ..
 my $PAGESIZE = 10;
 my $PAGELINK = 10;
 
@@ -71,9 +72,9 @@ sub Main {
     $page = int($q->param('page'));
     $time = time();
     $email = '';
-    $userid = $q->cookie(-name=>'mUSERID');
-    $passwd = unpack('u', $q->cookie(-name=>'mPASSWD'));
-    $pop3_server = $q->cookie(-name=>'mSERVER');
+    $userid = &mXORCrypt($q->cookie(-name=>'mUSERID'));
+    $passwd = &mXORCrypt($q->cookie(-name=>'mPASSWD'));
+    $pop3_server = &mXORCrypt($q->cookie(-name=>'mSERVER'));
     $mimepart = $q->param('mimepart');
 
     if ($back > -1) { $back++; }
@@ -115,19 +116,19 @@ sub List {
     if ($q->param('userid') ne '') {
         $cookie1 = $q->cookie(
             -name=>'mUSERID',
-            -value=>$userid,
+            -value=>&mXORCrypt($userid),
             -path=>'/',
             -domain=>$server,
         );
         $cookie2 = $q->cookie(
             -name=>'mPASSWD',
-            -value=>pack('u', $passwd),
+            -value=>&mXORCrypt($passwd),
             -path=>'/',
             -domain=>$server,
         );
         $cookie3 = $q->cookie(
             -name=>'mSERVER',
-            -value=>$pop3_server,
+            -value=>&mXORCrypt($pop3_server),
             -path=>'/',
             -domain=>$server,
         );
@@ -1707,6 +1708,22 @@ sub mQUIT {
     if ($buf =~ /^-ERR/) { &Error($buf); }
 
     close($M);
+}
+
+sub mXORCrypt {
+    my $str = $_[0];
+    my $key = $ENCKEY;
+
+    while (length($key) < length($str)) {
+        $key .= $key;
+    }
+
+    my $xor = '';
+    for my $i (0 .. (length($str) - 1)) {
+        $xor .= substr($str, $i, 1) ^ substr($key, $i, 1);
+    }
+
+    return $xor;
 }
 
 sub mDecodeHeader {
