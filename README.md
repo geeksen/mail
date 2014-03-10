@@ -31,7 +31,7 @@ Check Perl Path
 #!/usr/bin/perl
 ```
 
-Set Your Own Ecryption Key
+Set Your Own Encryption Key
 --------------------------
 * vi mail.cgi
 ```perl
