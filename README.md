@@ -20,7 +20,7 @@ Install mail.cgi
 * git clone https://github.com/geeksen/mail.git
 * cd mail
 
-Check
+Check Perl Path
 -----
 * which perl
 > /usr/bin/perl
@@ -29,6 +29,13 @@ Check
 * vi mail.cgi
 ```perl
 #!/usr/bin/perl
+```
+
+Set Your Own Ecryption Key
+--------------------------
+* vi mail.cgi
+```perl
+my $ENCKEY = 'too_many_secrets';
 ```
 
 Chmod
