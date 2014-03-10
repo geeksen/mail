@@ -35,7 +35,7 @@ Set Your Own Encryption Key
 --------------------------
 * vi mail.cgi
 ```perl
-my $ENCKEY = 'too_many_secrets';
+my $KEY = 'too_many_secrets';
 ```
 
 Chmod

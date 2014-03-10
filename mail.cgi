@@ -32,9 +32,9 @@ use CGI qw/:param :header :upload/;
 use Encode;
 
 # Conf
-my $ENCKEY = 'too_many_secrets'; # encryption key
-my $LOCALE = 'en';               # ko, en ..
-my $TIMEZONE = '+0900';          # +0900, KST, GMT ..
+my $KEY = 'too_many_secrets'; # encryption key
+my $LOCALE = 'en';            # ko, en ..
+my $TIMEZONE = '+0900';       # +0900, KST, GMT ..
 my $PAGESIZE = 10;
 my $PAGELINK = 10;
 
@@ -1712,7 +1712,7 @@ sub mQUIT {
 
 sub mXORCrypt {
     my $str = $_[0];
-    my $key = $ENCKEY;
+    my $key = $KEY;
 
     while (length($key) < length($str)) {
         $key .= $key;
