@@ -590,7 +590,7 @@ sub Form {
     </td>
   </tr>
   <tr>
-    <th>$l{'receiver'}</th>
+    <th>$l{'recipient'}</th>
     <td><input type='text' name='to' class='input-text' value='$to'></td>
   </tr>
   <tr>
@@ -1916,7 +1916,7 @@ sub mLocale {
         $l{'from'} = '보낸 사람';
         $l{'to'} = '받은 사람';
         $l{'sender'} = '보내는 사람';
-        $l{'receiver'} = '받는 사람';
+        $l{'recipient'} = '받는 사람';
         $l{'cc'} = '참조';
         $l{'bcc'} = '숨은참조';
         $l{'date'} = '날짜';
@@ -1970,7 +1970,7 @@ sub mLocale {
         $l{'from'} = 'From';
         $l{'to'} = 'To';
         $l{'sender'} = 'From';
-        $l{'receiver'} = 'To';
+        $l{'recipient'} = 'To';
         $l{'cc'} = 'CC';
         $l{'bcc'} = 'BCC';
         $l{'date'} = 'Date';
@@ -1990,13 +1990,13 @@ sub mLocale {
         $l{'send_submit'} = '    Send    ';
         $l{'cancel'} = 'Cancel';
 
-        $l{'userid_error'} = 'UserID Must Be Specified.';
-        $l{'passwd_error'} = 'Passwd Must Be Specified.';
-        $l{'pop3_server_error'} = 'POP3 Server Must Be Specified.';
-        $l{'from_error'} = 'From Must Be Specified.';
-        $l{'to_error'} = 'To Must Be Specified.';
-        $l{'smtp_server_error'} = 'SMTP Server Must Be Specified.';
-        $l{'body_error'} = 'Body Must Be Specified.';
+        $l{'userid_error'} = 'UserID Is Required.';
+        $l{'passwd_error'} = 'Passwd Is Required.';
+        $l{'pop3_server_error'} = 'POP3 Server Is Required.';
+        $l{'from_error'} = 'Sender Is Required.';
+        $l{'to_error'} = 'Recipient Is Required.';
+        $l{'smtp_server_error'} = 'SMTP Server Is Required.';
+        $l{'body_error'} = 'Body Is Required.';
         $l{'connect_error'} = 'Could NOT Connect To Server.';
 
         $l{'name_unspecified'} = 'Unspecified';
