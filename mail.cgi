@@ -542,6 +542,7 @@ sub Form {
 
         $body = $m{'body'};
         $body =~ s/<br>/\r\n/gi;
+        $body =~ s/<br\/>/\r\n/gi;
         $body =~ s/<\/?[!A-Za-z]+[^>]*\>//gi;
         $body =~ s/\r\n\r\n/\r\n/g;
         $body =~ s/\r\n/\r\n>\ /g;
@@ -580,7 +581,7 @@ sub Form {
 <form method='post' action='$script' enctype='multipart/form-data'>
 <table>
   <tr>
-    <th class='th-fixed-width'>$l{'sender'}</th>
+    <th class='th-fixed-width'>$l{'from'}</th>
     <td>
       <input type='text' name='from' class='input-text' value='<$email>'>
       <input type='hidden' name='mode' value='send'>
@@ -590,7 +591,7 @@ sub Form {
     </td>
   </tr>
   <tr>
-    <th>$l{'recipient'}</th>
+    <th>$l{'to'}</th>
     <td><input type='text' name='to' class='input-text' value='$to'></td>
   </tr>
   <tr>
@@ -1913,10 +1914,8 @@ sub mLocale {
         $l{'total'} = '메시지';
         $l{'page'} = '페이지';
         $l{'num'} = '번호';
-        $l{'from'} = '보낸 사람';
-        $l{'to'} = '받은 사람';
-        $l{'sender'} = '보내는 사람';
-        $l{'recipient'} = '받는 사람';
+        $l{'from'} = '보내는 사람';
+        $l{'to'} = '받는 사람';
         $l{'cc'} = '참조';
         $l{'bcc'} = '숨은참조';
         $l{'date'} = '날짜';
@@ -1969,8 +1968,6 @@ sub mLocale {
         $l{'num'} = 'No.';
         $l{'from'} = 'From';
         $l{'to'} = 'To';
-        $l{'sender'} = 'From';
-        $l{'recipient'} = 'To';
         $l{'cc'} = 'CC';
         $l{'bcc'} = 'BCC';
         $l{'date'} = 'Date';
