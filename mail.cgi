@@ -1176,6 +1176,8 @@ sub Reload {
     print "  <title>Reload</title>\n";
     print "  <meta http-equiv='refresh' content='0;url=$url'>\n";
     print "</head>\n<body>\n</body>\n</html>";
+
+    exit;
 }
 
 sub mUSER {
