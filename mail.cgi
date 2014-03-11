@@ -740,11 +740,11 @@ sub Send {
     $boundary = 'MultiPart_Boundary_' . $time;
     $boundary_alternative = 'MultiPart_Alternative_Boundary_' . $time;
 
-    if ($from eq '')    { &Error($l{'from_error'}); }
-    if ($to eq '')      { &Error($l{'to_error'}); }
-    if ($subject eq '') { $subject = $l{'subject_unspecified'}; }
-    if ($body eq '')    { &Error($l{'body_error'}); }
-    if ($smtp_server eq '')    { &Error($l{'smtp_server_error'}); }
+    if ($from eq '')        { &Error($l{'from_error'}); }
+    if ($to eq '')          { &Error($l{'to_error'}); }
+    if ($subject eq '')     { $subject = $l{'subject_unspecified'}; }
+    if ($body eq '')        { &Error($l{'body_error'}); }
+    if ($smtp_server eq '') { &Error($l{'smtp_server_error'}); }
 
     if ($to  ne '') { @to  = split(/[,;]/, $to);  }
     if ($cc  ne '') { @cc  = split(/[,;]/, $cc);  }
@@ -1161,7 +1161,7 @@ sub Error {
 
     print $q->header(-charset=>'utf-8');
     &Head($message);
-    print "</div>\n</body>\n</html>";
+    print "\n</div>\n</body>\n</html>";
 
     exit;
 }
