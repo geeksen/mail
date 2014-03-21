@@ -26,7 +26,8 @@
 # THE SOFTWARE.
 
 use strict;
-#use warnings;
+use warnings;
+no warnings 'uninitialized';
 
 use CGI qw/:param :header :upload/;
 use Encode;
@@ -65,7 +66,7 @@ my $total = 0;
 sub Main {
     $q = new CGI;
 
-    $num = $q->param('num');
+    $num = int($q->param('num'));
     $mode = $q->param('mode');
     $type = $q->param('type');
     $back = int($q->param('back'));
@@ -1348,8 +1349,11 @@ sub mRETR {
     }
 
     $flag_mimepart = 0;
-    @mimepart = split(/\./, $mMIMEPART);
-    @mimepart = splice(@mimepart, 1, scalar(@mimepart) - 1);
+    @mimepart = ();
+    if ($mMIMEPART =~ /\./) {
+        @mimepart = split(/\./, $mMIMEPART);
+        @mimepart = splice(@mimepart, 1, scalar(@mimepart) - 1);
+    }
 
     while (1) {
         $headers = $TMP;
