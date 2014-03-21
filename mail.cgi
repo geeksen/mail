@@ -55,7 +55,7 @@ my $N;
 my $M;
 
 my ($num, $mode, $type, $back, $page, $time);
-my ($email, $userid, $passwd, $pop3_server, $mimepart);
+my ($email, $userid, $passwd, $pop_server, $mimepart);
 
 my $buf = '';
 my $total = 0;
@@ -74,7 +74,7 @@ sub Main {
     $email = '';
     $userid = &mXORCrypt($q->cookie(-name=>'mUSERID'));
     $passwd = &mXORCrypt($q->cookie(-name=>'mPASSWD'));
-    $pop3_server = &mXORCrypt($q->cookie(-name=>'mSERVER'));
+    $pop_server = &mXORCrypt($q->cookie(-name=>'mSERVER'));
     $mimepart = $q->param('mimepart');
 
     if ($back > -1) { $back++; }
@@ -82,11 +82,11 @@ sub Main {
     if ($q->param('userid') ne '') {
         $userid = $q->param('userid');
         $passwd = $q->param('passwd');
-        $pop3_server = $q->param('pop3_server');
+        $pop_server = $q->param('pop_server');
     }
 
     if ($userid =~ /@/) { $email = $userid; }
-    else { $email = $userid . '@' . $pop3_server; }
+    else { $email = $userid . '@' . $pop_server; }
 
     &mLocale;
 
@@ -128,7 +128,7 @@ sub List {
         );
         $cookie3 = $q->cookie(
             -name=>'mSERVER',
-            -value=>&mXORCrypt($pop3_server),
+            -value=>&mXORCrypt($pop_server),
             -path=>'/',
             -domain=>$server,
         );
@@ -608,7 +608,7 @@ sub Form {
   </tr>
   <tr>
     <th>$l{'smtp_server'}</th>
-    <td><input type='text' name='smtp_server' class='input-text' value='$pop3_server'></td>
+    <td><input type='text' name='smtp_server' class='input-text' value='$pop_server'></td>
   </tr>
   <tr>
     <td colspan='2'><textarea name='body' rows='20' cols='80'>
@@ -1052,8 +1052,8 @@ sub LoginForm {
 </div>
 
 <div>
-  <label>$l{'pop3_server'}</label>
-  <input type='text' name='pop3_server'>
+  <label>$l{'pop_server'}</label>
+  <input type='text' name='pop_server'>
   <input type='submit' value='$l{'login_submit'}'>
 </div>
 
@@ -1185,11 +1185,11 @@ sub mUSER {
 
     if ($userid eq '') { &Error($l{'userid_error'}); }
     if ($passwd eq '') { &Error($l{'passwd_error'}); }
-    if ($pop3_server eq '') { &Error($l{'pop3_server_error'}); }
+    if ($pop_server eq '') { &Error($l{'pop_server_error'}); }
 
     socket($M, 2, 1, 6);
 
-    $host = gethostbyname($pop3_server);
+    $host = gethostbyname($pop_server);
     $sin = pack('S n a4 x8', 2, 110, $host);
     if (!connect($M, $sin)) { &Error($l{'connect_error'}); }
 
@@ -1902,7 +1902,7 @@ sub mLocale {
 
         $l{'userid'} = '아이디';
         $l{'passwd'} = '비밀번호';
-        $l{'pop3_server'} = '받는 메일서버';
+        $l{'pop_server'} = '받는 메일서버';
 
         $l{'logout'} = '로그아웃';
         $l{'compose'} = '편지쓰기';
@@ -1939,7 +1939,7 @@ sub mLocale {
 
         $l{'userid_error'} = '아이디가 필요합니다.';
         $l{'passwd_error'} = '비밀번호가 필요합니다.';
-        $l{'pop3_server_error'} = '받는 메일서버가 필요합니다.';
+        $l{'pop_server_error'} = '받는 메일서버가 필요합니다.';
         $l{'from_error'} = '보내는 사람의 이메일이 필요합니다.';
         $l{'to_error'} = '받는 사람이 필요합니다.';
         $l{'smtp_server_error'} = '보내는 메일서버가 필요합니다.';
@@ -1954,7 +1954,7 @@ sub mLocale {
 
         $l{'userid'} = 'UserID';
         $l{'passwd'} = 'Passwd';
-        $l{'pop3_server'} = 'POP3 Server';
+        $l{'pop_server'} = 'POP Server';
 
         $l{'logout'} = 'Logout';
         $l{'compose'} = 'Compose';
@@ -1991,7 +1991,7 @@ sub mLocale {
 
         $l{'userid_error'} = 'UserID Is Required.';
         $l{'passwd_error'} = 'Passwd Is Required.';
-        $l{'pop3_server_error'} = 'POP3 Server Is Required.';
+        $l{'pop_server_error'} = 'POP Server Is Required.';
         $l{'from_error'} = 'Sender Is Required.';
         $l{'to_error'} = 'Recipient Is Required.';
         $l{'smtp_server_error'} = 'SMTP Server Is Required.';
