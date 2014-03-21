@@ -688,7 +688,7 @@ EOT
     if ($type eq 'forward_attach') {
         print "  <tr>  <th>$l{'attachment'}</th>\n";
         print "  <td><input type='checkbox' name='attachment' value='0' checked>";
-        print "$m{'subject'}(" . &mSize($m{'headers'}) . ")</td>\n  </tr>\n";
+        print "$m{'subject'}(" . &mSize(length($m{'headers'})) . ")</td>\n  </tr>\n";
     }
 
     print <<EOT;
