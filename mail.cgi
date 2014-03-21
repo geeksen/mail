@@ -26,7 +26,7 @@
 # THE SOFTWARE.
 
 use strict;
-use warnings;
+#use warnings;
 
 use CGI qw/:param :header :upload/;
 use Encode;
