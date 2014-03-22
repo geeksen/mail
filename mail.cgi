@@ -1352,7 +1352,7 @@ sub mRETR {
     @mimepart = ();
     if ($mMIMEPART =~ /\./) {
         @mimepart = split(/\./, $mMIMEPART);
-        @mimepart = splice(@mimepart, 1, scalar(@mimepart) - 1);
+        shift(@mimepart);
     }
 
     while (1) {
@@ -1457,7 +1457,7 @@ sub mRETR {
                 elsif ($tmp eq "--$boundary\r") { $j++; }
                 else { $part[$j] .= "$tmp\n"; }
             }
-            @part = splice(@part, 1, scalar(@part) - 1);
+            shift(@part);
 
             foreach $part (@part) {
                 $TMP = '';
