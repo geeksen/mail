@@ -48,7 +48,7 @@ my %l;
 my $q;
 
 my $script = $ENV{'SCRIPT_NAME'};
-my $server = $ENV{'SERVER_NAME'};
+my $server_name = $ENV{'SERVER_NAME'};
 my $server_port = $ENV{'SERVER_PORT'};
 my $remote_addr = $ENV{'REMOTE_ADDR'};
 
@@ -119,19 +119,19 @@ sub List {
             -name=>'mUSERID',
             -value=>&mXORCrypt($userid),
             -path=>'/',
-            -domain=>$server,
+            -domain=>$server_name,
         );
         $cookie2 = $q->cookie(
             -name=>'mPASSWD',
             -value=>&mXORCrypt($passwd),
             -path=>'/',
-            -domain=>$server,
+            -domain=>$server_name,
         );
         $cookie3 = $q->cookie(
             -name=>'mSERVER',
             -value=>&mXORCrypt($pop_server),
             -path=>'/',
-            -domain=>$server,
+            -domain=>$server_name,
         );
 
         print $q->header(
@@ -858,7 +858,7 @@ sub Send {
     print $N "Subject: $subject\r\n";
     print $N "Date: $date\r\n";
     print $N "MIME-Version: 1.0\r\n";
-    print $N "X-Mailer: $server:$server_port$script\r\n";
+    print $N "X-Mailer: $server_name:$server_port$script\r\n";
     print $N "X-Sender-IP: $remote_addr\r\n";
 
     if (scalar(@attachment) > 0 ||
@@ -1010,19 +1010,19 @@ sub Logout {
         -name=>'mUSERID',
         -value=>'',
         -path=>'/',
-        -domain=>$server,
+        -domain=>$server_name,
     );
     $cookie2 = $q->cookie(
         -name=>'mPASSWD',
         -value=>'',
         -path=>'/',
-        -domain=>$server,
+        -domain=>$server_name,
     );
     $cookie3 = $q->cookie(
         -name=>'mSERVER',
         -value=>'',
         -path=>'/',
-        -domain=>$server,
+        -domain=>$server_name,
     );
 
     print $q->header(
