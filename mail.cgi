@@ -47,7 +47,7 @@ my %l;
 # CGI
 my $q;
 
-my $script = $ENV{'SCRIPT_NAME'};
+my $script_name = $ENV{'SCRIPT_NAME'};
 my $server_name = $ENV{'SERVER_NAME'};
 my $server_port = $ENV{'SERVER_PORT'};
 my $remote_addr = $ENV{'REMOTE_ADDR'};
@@ -143,13 +143,13 @@ sub List {
 
     &Head($email);
     print <<EOT;
-<span class='right'><a href='$script?mode=logout'>$l{'logout'}</a></span>
+<span class='right'><a href='$script_name?mode=logout'>$l{'logout'}</a></span>
 
-<form method='post' action='$script'>
+<form method='post' action='$script_name'>
 <div class='nav-top'>
 EOT
 
-    print "  <a href='$script?mode=form&amp;type=compose";
+    print "  <a href='$script_name?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a>\n";
 
     print <<EOT;
@@ -186,7 +186,7 @@ EOT
     </td>
     <td>$m{'from'}</td>
     <td>
-      <a href='$script?mode=read&amp;num=$i&amp;page=$page'>$m{'subject'}</a>
+      <a href='$script_name?mode=read&amp;num=$i&amp;page=$page'>$m{'subject'}</a>
     </td>
     <td>$m{'date'}</td>
   </tr>
@@ -205,8 +205,8 @@ EOT
 
     $i = int(($page - 1) / $PAGELINK) * $PAGELINK + 1;
     if ($i > $PAGELINK) {
-        print  "    <a href='$script?mode=list'>1</a> &nbsp;\n";
-        printf "    <a href='$script?mode=list&amp;page=%d'>", $i - 1;
+        print  "    <a href='$script_name?mode=list'>1</a> &nbsp;\n";
+        printf "    <a href='$script_name?mode=list&amp;page=%d'>", $i - 1;
         print  "&lt;&lt;</a> &nbsp;\n";
     }
     for ($j = 0; $i <= $totalpage && $j < $PAGELINK; $i++, $j++) {
@@ -214,13 +214,14 @@ EOT
             print "    <b>$i</b> &nbsp;\n";
         }
         else {
-            print "    <a href='$script?mode=list&amp;page=$i'>$i</a> &nbsp;\n";
+            print "    <a href='$script_name?mode=list&amp;page=$i'>";
+            print "$i</a> &nbsp;\n";
         }
     }
     if ($i <= $totalpage) {
-        print "    <a href='$script?mode=list&amp;page=$i'>";
+        print "    <a href='$script_name?mode=list&amp;page=$i'>";
         print "&gt;&gt;</a> &nbsp;\n";
-        print "    <a href='$script?mode=list&amp;page=$totalpage'>";
+        print "    <a href='$script_name?mode=list&amp;page=$totalpage'>";
         print "$totalpage</a> &nbsp;\n";
     }
 
@@ -233,17 +234,17 @@ EOT
   <span class='right'>
 EOT
 
-    print "    <a href='$script?mode=list&amp;page=$page&amp;time=$time'>";
+    print "    <a href='$script_name?mode=list&amp;page=$page&amp;time=$time'>";
     print "$l{'reload'}</a> |\n";
 
     if ($page > 1) {
-        printf "    <a href='$script?mode=list&amp;page=%d'>", $page - 1;
+        printf "    <a href='$script_name?mode=list&amp;page=%d'>", $page - 1;
         print  "$l{'prev'}</a> |\n";
     }
     else { print "    $l{'prev'} |\n"; }
 
     if ($page < $totalpage) {
-        printf "    <a href='$script?mode=list&amp;page=%d'>", $page + 1;
+        printf "    <a href='$script_name?mode=list&amp;page=%d'>", $page + 1;
         print  "$l{'next'}</a>\n";
     }
     else { print "    $l{'next'}\n"; }
@@ -292,30 +293,30 @@ sub Read {
     print $q->header(-charset=>'utf-8');
     &Head($m{'subject'});
     print <<EOT;
-<span class='right'><a href='$script?mode=logout'>$l{'logout'}</a></span>
+<span class='right'><a href='$script_name?mode=logout'>$l{'logout'}</a></span>
 
-<form method='post' action='$script'>
+<form method='post' action='$script_name'>
 <div class='nav-top'>
 EOT
 
-    print "  <a href='$script?mode=form&amp;type=compose";
+    print "  <a href='$script_name?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=reply&amp;num=$num";
+    print "  <a href='$script_name?mode=form&amp;type=reply&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
+    print "  <a href='$script_name?mode=form&amp;type=reply_all&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply_all'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=forward&amp;num=$num";
+    print "  <a href='$script_name?mode=form&amp;type=forward&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=forward_attach";
+    print "  <a href='$script_name?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
     print "$l{'forward_attach'}</a> |\n";
-    print "  <a href='$script?mode=read&amp;type=headers&amp;num=$num";
+    print "  <a href='$script_name?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
 
     if ($mimepart eq '') {
-        print "  <a href='$script?mode=delete&amp;num=$num&amp;page=$page";
-        print "&amp;time=$time&amp;back=-1'>$l{'delete'}</a>\n";
+        print "  <a href='$script_name?mode=delete&amp;num=$num";
+        print "&amp;page=$page&amp;time=$time&amp;back=-1'>$l{'delete'}</a>\n";
     }
     else { print "  $l{'delete'}\n"; }
 
@@ -324,19 +325,19 @@ EOT
 EOT
 
     if ($num < $total) {
-        printf "    <a href='$script?mode=read&amp;num=%d", $num + 1;
+        printf "    <a href='$script_name?mode=read&amp;num=%d", $num + 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'prev'}</a> |\n";
     }
     else { print "    $l{'prev'} |\n"; }
 
     if ($num > 1) {
-        printf "    <a href='$script?mode=read&amp;num=%d", $num - 1;
+        printf "    <a href='$script_name?mode=read&amp;num=%d", $num - 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'next'}</a> |\n";
     }
     else { print "    $l{'next'} |\n"; }
 
     if ($back == -1) {
-        print "    <a href='$script?mode=list&amp;page=$page";
+        print "    <a href='$script_name?mode=list&amp;page=$page";
         print "&amp;time=$time'>$l{'list'}</a>\n";
     }
     else {
@@ -398,14 +399,14 @@ EOT
 
             if ($attachment_content_id eq '') {
                 if ($attachment_type =~ /message\/rfc822/i) {
-                    print "<a href='$script?mode=read&amp;num=$num";
+                    print "<a href='$script_name?mode=read&amp;num=$num";
                     print "&amp;page=$page&amp;mimepart=$mimepart\.$i";
                     print "&amp;back=$back'>$attachment_name</a>";
                     print "($attachment_size) ";
                 }
                 else {
                     $attachment_name =~ s/ /%20/g;
-                    print "<a href='$script?mode=download&amp;num=$num";
+                    print "<a href='$script_name?mode=download&amp;num=$num";
                     print "&amp;mimepart=$mimepart&amp;time=$time";
                     print "&amp;attachment=$i/$attachment_name'>";
                     $attachment_name =~ s/%20/ /g;
@@ -434,23 +435,23 @@ EOT
 <div class='nav-bottom'>
 EOT
 
-    print "  <a href='$script?mode=form&amp;type=compose";
+    print "  <a href='$script_name?mode=form&amp;type=compose";
     print "&amp;page=$page'>$l{'compose'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=reply&amp;num=$num";
+    print "  <a href='$script_name?mode=form&amp;type=reply&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=reply_all&amp;num=$num";
+    print "  <a href='$script_name?mode=form&amp;type=reply_all&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'reply_all'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=forward&amp;num=$num";
+    print "  <a href='$script_name?mode=form&amp;type=forward&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart'>$l{'forward'}</a> |\n";
-    print "  <a href='$script?mode=form&amp;type=forward_attach";
+    print "  <a href='$script_name?mode=form&amp;type=forward_attach";
     print "&amp;num=$num&amp;page=$page&amp;mimepart=$mimepart'>";
     print "$l{'forward_attach'}</a> |\n";
-    print "  <a href='$script?mode=read&amp;type=headers&amp;num=$num";
+    print "  <a href='$script_name?mode=read&amp;type=headers&amp;num=$num";
     print "&amp;page=$page&amp;mimepart=$mimepart&amp;back=$back'>";
     print "$l{'headers'}</a> |\n";
 
     if ($mimepart eq '') {
-        print "  <a href='$script?mode=delete&amp;num=$num";
+        print "  <a href='$script_name?mode=delete&amp;num=$num";
         print "&amp;page=$page&amp;time=$time&amp;back=-1'>";
         print "$l{'delete'}</a>\n";
     }
@@ -461,19 +462,19 @@ EOT
 EOT
 
     if ($num < $total) {
-        printf "    <a href='$script?mode=read&amp;num=%d", $num + 1;
+        printf "    <a href='$script_name?mode=read&amp;num=%d", $num + 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'prev'}</a> |\n";
     }
     else { print "    $l{'prev'} |\n"; }
 
     if ($num > 1) {
-        printf "    <a href='$script?mode=read&amp;num=%d", $num - 1;
+        printf "    <a href='$script_name?mode=read&amp;num=%d", $num - 1;
         print  "&amp;page=$page&amp;back=$back'>$l{'next'}</a> |\n";
     }
     else { print "    $l{'next'} |\n"; }
 
     if ($back == -1) {
-        print "    <a href='$script?mode=list&amp;page=$page";
+        print "    <a href='$script_name?mode=list&amp;page=$page";
         print "&amp;time=$time'>$l{'list'}</a>\n";
     }
     else {
@@ -521,10 +522,10 @@ sub Delete {
     print $q->header(-charset=>'utf-8');
     if ($num > 1) {
         $num--;
-        &Reload("$script?mode=read&amp;num=$num" .
+        &Reload("$script_name?mode=read&amp;num=$num" .
             "&amp;page=$page&amp;time=$time&amp;back=-1");
     }
-    else { &Reload("$script?mode=list&amp;page=$page"); }
+    else { &Reload("$script_name?mode=list&amp;page=$page"); }
 }
 
 sub Form {
@@ -577,9 +578,9 @@ sub Form {
     print $q->header(-charset=>'utf-8');
     &Head($l{$type});
     print <<EOT;
-<span class='right'><a href='$script?mode=logout'>$l{'logout'}</a></span>
+<span class='right'><a href='$script_name?mode=logout'>$l{'logout'}</a></span>
 
-<form method='post' action='$script' enctype='multipart/form-data'>
+<form method='post' action='$script_name' enctype='multipart/form-data'>
 <table>
   <tr>
     <th class='th-fixed-width'>$l{'from'}</th>
@@ -664,14 +665,14 @@ EOT
                 print "<input type=checkbox name=attachment value='$i'";
                 print " checked>";
                 if ($attachment_type =~ /message\/rfc822/i) {
-                    print "<a href='$script?mode=read&amp;num=$num";
+                    print "<a href='$script_name?mode=read&amp;num=$num";
                     print "&amp;page=$page&amp;mimepart=$mimepart\.$i";
                     print "&amp;back=$back'>$attachment_name";
                     print "($attachment_size)</a> ";
                 }
                 else {
                     $attachment_name =~ s/ /%20/g;
-                    print "<a href='$script?mode=download&amp;num=$num";
+                    print "<a href='$script_name?mode=download&amp;num=$num";
                     print "&amp;mimepart=$mimepart&amp;time=$time";
                     print "&amp;attachment=$i/$attachment_name'>";
                     $attachment_name =~ s/%20/ /g;
@@ -858,7 +859,7 @@ sub Send {
     print $N "Subject: $subject\r\n";
     print $N "Date: $date\r\n";
     print $N "MIME-Version: 1.0\r\n";
-    print $N "X-Mailer: $server_name:$server_port$script\r\n";
+    print $N "X-Mailer: $server_name:$server_port$script_name\r\n";
     print $N "X-Sender-IP: $remote_addr\r\n";
 
     if (scalar(@attachment) > 0 ||
@@ -947,8 +948,8 @@ sub Send {
     close($N);
 
     print $q->header(-charset=>'utf-8');
-    if ($userid ne '') { &Reload("$script?mode=list&amp;page=$page"); }
-    else { &Reload($script); }
+    if ($userid ne '') { &Reload("$script_name?mode=list&amp;page=$page"); }
+    else { &Reload($script_name); }
 }
 
 sub Download {
@@ -1029,7 +1030,7 @@ sub Logout {
         -charset=>'utf-8',
         -cookie=>[$cookie1, $cookie2, $cookie3],
     );
-    &Reload($script);
+    &Reload($script_name);
 }
 
 sub LoginForm {
@@ -1038,7 +1039,7 @@ sub LoginForm {
     print <<EOT;
 <span class='right'><a href='http://www.geeksen.com'>Download Source</a></span>
 
-<form method='post' action='$script'>
+<form method='post' action='$script_name'>
 <fieldset>
 
 <div>
@@ -1635,8 +1636,8 @@ sub mRETR {
 
     $bgcolor = '#fff';
     if ($content_type =~ /text\/html/i) {
-        $body =~ s/=["']+mailto:([A-Za-z0-9-_\.]+@[A-Za-z0-9-_\.]+)["']+/='$script\?mode=form&amp;type=compose&amp;to=$1'/gi;
-        $body =~ s/=["']+$script\?mode=form&amp;type=compose&amp;to=(.*)\?subject=(.*)["']+/='$script\?mode=form&amp;type=compose&amp;to=$1&amp;subject=$2'/gi;
+        $body =~ s/=["']+mailto:([A-Za-z0-9-_\.]+@[A-Za-z0-9-_\.]+)["']+/='$script_name\?mode=form&amp;type=compose&amp;to=$1'/gi;
+        $body =~ s/=["']+$script_name\?mode=form&amp;type=compose&amp;to=(.*)\?subject=(.*)["']+/='$script_name\?mode=form&amp;type=compose&amp;to=$1&amp;subject=$2'/gi;
 
         $background = '';
         for ($i = 0; $i < $attachment_count; $i++) {
@@ -1645,7 +1646,7 @@ sub mRETR {
             if ($part_content_id ne '') {
                 $part_name =  $m{'attachment'}->[$i]->{'name'};
                 $part_name =~ s/ /%20/g;
-                $part_name =  "$script?mode=download&amp;num=$mNUM&amp;mimepart=$mMIMEPART&amp;time=$time&amp;attachment=$i/" . $part_name;
+                $part_name =  "$script_name?mode=download&amp;num=$mNUM&amp;mimepart=$mMIMEPART&amp;time=$time&amp;attachment=$i/" . $part_name;
 
                 if ($body =~ /<body(?:.|\n)*background=["']?cid:$part_content_id/i) {
                     $background = $part_name;
@@ -1666,7 +1667,7 @@ sub mRETR {
         $body =~ s/\r?\n/<br>\r\n/g;
     }
 
-    $body =~ s/(?:<|&lt;)([A-Za-z0-9-\._]+@[A-Za-z0-9-\.]+)(?:>|&gt;)/&lt;<a href='$script\?mode=form&amp;type=compose&amp;to=$1'>$1<\/a>&gt;/gi;
+    $body =~ s/(?:<|&lt;)([A-Za-z0-9-\._]+@[A-Za-z0-9-\.]+)(?:>|&gt;)/&lt;<a href='$script_name\?mode=form&amp;type=compose&amp;to=$1'>$1<\/a>&gt;/gi;
     #$body =~ s/(?:[^"'=])((?:http|https|ftp)+:\/\/[A-Za-z0-9-\.\/:]+[A-Za-z0-9#%&\+-\.\/:;\?=@]+)/<a href='$1' target='_blank'>$1<\/a>/gi;
 
     $body =~ s/<script/<noscript/gi;
