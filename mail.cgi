@@ -1676,7 +1676,9 @@ sub mRETR {
     $body =~ s/<\/title>/<\/title-->/gi;
     $body =~ s/<style/<\!--style/gi;
     $body =~ s/<\/style>/<\/style-->/gi;
+    $body =~ s/document\.write/document_write/g;
     $body =~ s/document\.cookie/document_cookie/g;
+    $body =~ s/location\./location_/g;
 
     $m{'from'} = &mEncodeUTF8($charset, $from);
     $m{'to'} = &mEncodeUTF8($charset, $to);
