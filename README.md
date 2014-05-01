@@ -13,9 +13,11 @@ AddHandler cgi-script .cgi
 * cd /etc/apache2/sites-enabled
 * sudo vi 000-default
 ```
-<Directory /var/www&gt;
+<Directory /var/www>
+..
 Options ExecCGI
-&lt;/Directory&gt;
+..
+</Directory>
 ```
 
 * sudo /etc/init.d/apache2 restart
