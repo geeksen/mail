@@ -6,11 +6,17 @@ Enable CGI
 * sudo a2enmod cgi
 * cd /etc/apache2/mods-available
 * sudo vi mime.conf
-> AddHandler cgi-script .cgi
+```
+AddHandler cgi-script .cgi
+```
 
 * cd /etc/apache2/sites-enabled
 * sudo vi 000-default
-> &lt;Directory /var/www&gt; .. Options ExecCGI .. &lt;/Directory&gt;
+```
+<Directory /var/www&gt;
+Options ExecCGI
+&lt;/Directory&gt;
+```
 
 * sudo /etc/init.d/apache2 restart
 
@@ -23,7 +29,9 @@ Install mail.cgi
 Check Perl Path
 -----
 * which perl
-> /usr/bin/perl
+```
+/usr/bin/perl
+```
 
 * (if necessary, modify the first line of source code)
 * vi mail.cgi
