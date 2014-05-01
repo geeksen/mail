@@ -14,8 +14,7 @@ AddHandler cgi-script .cgi
 * sudo vi 000-default
 ```
 <Directory /var/www>
-..
-Options ExecCGI
+Options ExecCGI ..
 ..
 </Directory>
 ```
