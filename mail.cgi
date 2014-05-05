@@ -1608,6 +1608,7 @@ sub mRETR {
                 else {
                     $part_name = &mDecodeHeader($part_name);
                     $part_name = &mEncodeUTF8($part_charset, $part_name);
+                    $part_name = &mEncodeHTML($part_name);
                     $part_body = &mDecodeBody($part_encoding, $TMP);
                     $part_size = length($part_body);
                     if ($part_name eq '') {
