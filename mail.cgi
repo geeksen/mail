@@ -1668,6 +1668,12 @@ sub mRETR {
         $body =~ s/\r?\n/<br>\r\n/g;
     }
 
+    foreach my $non_displayable ('%0[0-8bcef]', '%1[0-9a-f]', '[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+') {
+        while ($body =~ /$non_displayable/) {
+            $body =~ s/$non_displayable//gi;
+        }
+    }
+
     $body =~ s/(?:<|&lt;)([A-Za-z0-9-\._]+@[A-Za-z0-9-\.]+)(?:>|&gt;)/&lt;<a href='$script_name\?mode=form&amp;type=compose&amp;to=$1'>$1<\/a>&gt;/gi;
     #$body =~ s/(?:[^"'=])((?:http|https|ftp)+:\/\/[A-Za-z0-9-\.\/:]+[A-Za-z0-9#%&\+-\.\/:;\?=@]+)/<a href='$1' target='_blank'>$1<\/a>/gi;
 
@@ -1680,6 +1686,13 @@ sub mRETR {
     $body =~ s/document\.write/document_write/g;
     $body =~ s/document\.cookie/document_cookie/g;
     $body =~ s/location\./location_/g;
+    $body =~ s/\.parentNode/_parentNode/g;
+    $body =~ s/\.innerHTML/_innerHTML/g;
+    $body =~ s/javascript\s*://gi;
+    $body =~ s/expression\s*(\(|&\#40;)//gi;
+    $body =~ s/vbscript\s*://gi;
+    $body =~ s/Redirect\s+302//gi;
+    $body =~ s/([\"'])?data\s*:[^\\1]*?base64[^\\1]*?,[^\\1]*?\\1?//gi;
 
     $m{'from'} = &mEncodeUTF8($charset, $from);
     $m{'to'} = &mEncodeUTF8($charset, $to);
