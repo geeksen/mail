@@ -28,7 +28,7 @@ Install mail.cgi
 * cd mail
 
 Check Perl Path
------
+---------------
 * which perl
 ```
 /usr/bin/perl
