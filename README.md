@@ -27,19 +27,6 @@ Install mail.cgi
 * git clone https://github.com/geeksen/mail.git
 * cd mail
 
-Check Perl Path
----------------
-* which perl
-```
-/usr/bin/perl
-```
-
-* (if necessary, modify the first line of source code)
-* vi mail.cgi
-```perl
-#!/usr/bin/perl
-```
-
 Set Your Own Encryption Key
 --------------------------
 * vi mail.cgi
