@@ -49,7 +49,7 @@ my $KEY = 'too_many_secrets';
 
 Chmod
 -----
-* chmod a+x mail.cgi
+* chmod 705 mail.cgi
 
 Run
 ---
