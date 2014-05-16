@@ -1674,9 +1674,6 @@ sub mRETR {
         }
     }
 
-    $body =~ s/(?:<|&lt;)([A-Za-z0-9-\._]+@[A-Za-z0-9-\.]+)(?:>|&gt;)/&lt;<a href='$script_name\?mode=form&amp;type=compose&amp;to=$1'>$1<\/a>&gt;/gi;
-    #$body =~ s/(?:[^"'=])((?:http|https|ftp)+:\/\/[A-Za-z0-9-\.\/:]+[A-Za-z0-9#%&\+-\.\/:;\?=@]+)/<a href='$1' target='_blank'>$1<\/a>/gi;
-
     $body =~ s/<script/<noscript/gi;
     $body =~ s/<\/script>/<\/noscript>/gi;
     $body =~ s/<title/<\!--title/gi;
@@ -1693,6 +1690,9 @@ sub mRETR {
     $body =~ s/vbscript\s*://gi;
     $body =~ s/Redirect\s+302//gi;
     $body =~ s/([\"'])?data\s*:[^\\1]*?base64[^\\1]*?,[^\\1]*?\\1?//gi;
+
+    $body =~ s/(?:<|&lt;)([A-Za-z0-9-\._]+@[A-Za-z0-9-\.]+)(?:>|&gt;)/&lt;<a href='$script_name\?mode=form&amp;type=compose&amp;to=$1'>$1<\/a>&gt;/gi;
+    #$body =~ s/(?:[^"'=])((?:http|https|ftp)+:\/\/[A-Za-z0-9-\.\/:]+[A-Za-z0-9#%&\+-\.\/:;\?=@]+)/<a href='$1' target='_blank'>$1<\/a>/gi;
 
     $m{'from'} = &mEncodeUTF8($charset, $from);
     $m{'to'} = &mEncodeUTF8($charset, $to);
