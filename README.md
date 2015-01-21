@@ -1,6 +1,12 @@
 mail.cgi
 ========
 
+Install Apache2
+---------------
+* sudo apt-get update
+* sudo apt-get upgrade
+* sudo apt-get install apache2
+
 Enable CGI
 ----------
 * sudo a2enmod cgi
@@ -28,7 +34,7 @@ Install mail.cgi
 * cd mail
 
 Set Your Own Encryption Key
---------------------------
+---------------------------
 * vi mail.cgi
 ```perl
 my $KEY = 'too_many_secrets';
